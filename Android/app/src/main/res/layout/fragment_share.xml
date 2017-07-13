@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.persophone.persophone_bottom.com.persophone.persophone_application.ShareFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/hel1_grid"
+        android:orientation="vertical">
+
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_gravity="top"
+            android:layout_height="@dimen/top_tb_margin" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Wellcome to Share"
+            android:textSize="50dp"/>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PersoPhone</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- String for bottom bar -->
+    <string name="bot_str_usage">Usage</string>
+    <string name="bot_str_rec">Recommendation</string>
+    <string name="bot_str_my_perf">Preferences</string>
+    <string name="bot_str_rate">Rate yours</string>
+    <string name="bot_str_share">Share</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

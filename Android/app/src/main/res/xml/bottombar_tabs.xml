@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Using open source libarary for bottom bar
+    https://github.com/roughike/BottomBar -->
+
+<tabs>
+    <tab
+        id="@+id/bot_my_usage"
+        icon="@drawable/ic_usage"
+        title="@string/bot_str_usage" />
+    <tab
+        id="@+id/bot_rec_for_me"
+        icon="@drawable/ic_star"
+        title="@string/bot_str_rec" />
+    <tab
+        id="@+id/bot_my_perf"
+        icon="@drawable/ic_tool"
+        title="@string/bot_str_my_perf" />
+
+    <tab
+        id="@+id/bot_rate"
+        icon="@drawable/ic_rate"
+        title="@string/bot_str_rate" />
+
+    <tab
+        id="@+id/bot_share"
+        icon="@drawable/ic_share"
+        title="@string/bot_str_share" />
+
+</tabs>

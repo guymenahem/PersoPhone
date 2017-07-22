@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements
                 Log.e("CHANGE","rec");
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, RecommendationFragment.newInstance("",""), "Recommendation")
+                        .replace(R.id.fragment_container, RecommendationFragment.newInstance(), "Recommendation")
                         .commit();
                 break;
 

@@ -15,12 +15,157 @@
             android:layout_gravity="top"
             android:layout_height="@dimen/top_tb_margin" />
 
-
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text=""
-            android:textSize="50dp"/>
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="Battery:"/>
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+            android:id="@+id/usage_graph" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="5">
+
+            <!-- Battery -->
+            <!-- Battery title-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=' Battery: '
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="0"
+                android:layout_column="0"/>
+
+            <!-- Battery value-->
+            <TextView
+                android:id="@+id/battery_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='2 Critical per day'
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="0"
+                android:layout_column="1" />
+
+            <!-- Battery badge-->
+            <TextView
+                android:id="@+id/battery_notification"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/danger_badge"
+                android:text="critical"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- Memory -->
+            <!-- Memory title-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=' Memory: '
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="0"/>
+
+            <!-- Memory value-->
+            <TextView
+                android:id="@+id/memory_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='never critical'
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="1" />
+
+            <!-- Memory badge-->
+            <TextView
+                android:id="@+id/memory_notification"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ok_badge"
+                android:text="good"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- Storage -->
+            <!-- Storage title-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=' Storage: '
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="2"
+                android:layout_column="0"/>
+
+            <!-- Storage value-->
+            <TextView
+                android:id="@+id/storage_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='average free is 4GB'
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="2"
+                android:layout_column="1" />
+
+            <!-- Storage badge-->
+            <TextView
+                android:id="@+id/storage_notification"
+                android:layout_row="2"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/medium_badge"
+                android:text="nice to have"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- Screen -->
+            <!-- Screen title-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=' Screen: '
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="3"
+                android:layout_column="0"/>
+
+            <!-- Screen value-->
+            <TextView
+                android:id="@+id/screen_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='85% from max in market'
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="3"
+                android:layout_column="1" />
+
+            <!-- Screen badge-->
+            <TextView
+                android:id="@+id/screen_notification"
+                android:layout_row="3"
+                android:layout_column="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ok_badge"
+                android:text="good"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+
+        </GridLayout>
 
     </LinearLayout>
 

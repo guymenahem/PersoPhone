@@ -1,0 +1,182 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.persophone.app.PhoneRecFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_height="240dp">
+
+            <Space android:layout_height="match_parent"
+                android:layout_width="105dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_height="180dp"
+                    android:src="@drawable/nexus"
+                    android:id="@+id/phone_image"
+                    android:layout_width="150dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nexus 6p exmaple"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/phone_name"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="3"
+            android:rowCount="8"
+            android:layout_gravity="left">
+
+            <!-- SCREEN -->
+
+            <!-- Screen Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=' Screen: '
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="0"
+                android:layout_column="0"/>
+
+            <!-- Screen Value -->
+            <TextView
+                android:id="@+id/screen_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='5.5"'
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="0"
+                android:layout_column="1" />
+
+            <!-- Screen Upgrade -->
+            <TextView
+                android:id="@+id/screen_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(+15%)"
+                android:textColor="@color/upgrade_green"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="0"
+                android:layout_column="2"/>
+
+            <!-- Memory -->
+            <!-- Memory title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" RAM: "
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="0"/>
+
+            <!-- Memory value -->
+            <TextView
+                android:id="@+id/memory_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8GB"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="1"/>
+
+            <!-- Memory upgrade -->
+            <TextView
+                android:id="@+id/memory_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(+25%)"
+                android:textColor="@color/upgrade_green"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="2"/>
+
+            <!-- Storage -->
+            <!-- Storage Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Storage: "
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="2"
+                android:layout_column="0"/>
+
+            <!-- Storage Value -->
+            <TextView
+                android:id="@+id/storage_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="64GB"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="2"
+                android:layout_column="1"/>
+
+            <!-- Storage upgrade -->
+            <TextView
+                android:id="@+id/storage_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(+50%)"
+                android:textColor="@color/upgrade_green"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="2"
+                android:layout_column="2"/>
+
+            <!-- Battery -->
+            <!-- Battery title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Battery: "
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="3"
+                android:layout_column="0"/>
+
+            <!-- Battery value -->
+            <TextView
+                android:id="@+id/battery_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 3000 mAh "
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="3"
+                android:layout_column="1"/>
+
+            <TextView
+                android:id="@+id/battery_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(+15%)"
+                android:textColor="@color/upgrade_green"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="3"
+                android:layout_column="2"/>
+
+
+        </GridLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

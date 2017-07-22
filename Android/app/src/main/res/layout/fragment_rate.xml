@@ -4,23 +4,126 @@
     android:layout_height="match_parent"
     tools:context="com.persophone.persophone_bottom.com.persophone.persophone_application.RateFragment">
 
-    <LinearLayout
+
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/hel1_grid"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:rowCount="12"
+        android:columnCount="2">
 
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
             android:layout_gravity="top"
-            android:layout_height="@dimen/top_tb_margin" />
+            android:layout_height="@dimen/top_tb_margin"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnSpan="2"/>
 
-
+        <!-- Battery -->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Rate - here you can rate your phone"
-            android:textSize="50dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Battery:"
+            android:layout_row="1"
+            android:layout_column="0"/>
+        <RatingBar
+            android:id="@+id/battery_rating"
+            android:layout_width="wrap_content"
+            android:numStars="5"
+            android:rating="0.0"
+            android:stepSize="1.0"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"/>
 
-    </LinearLayout>
+        <!-- Camera -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Camera:"
+            android:layout_row="2"
+            android:layout_column="0"/>
+        <RatingBar
+            android:id="@+id/camera_rating"
+            android:layout_width="wrap_content"
+            android:numStars="5"
+            android:rating="0.0"
+            android:stepSize="1.0"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"/>
+
+        <!-- Screen -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Screen:"
+            android:layout_row="3"
+            android:layout_column="0"/>
+        <RatingBar
+            android:id="@+id/screen_rating"
+            android:layout_width="wrap_content"
+            android:numStars="5"
+            android:rating="0.0"
+            android:stepSize="1.0"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="1"/>
+
+        <!-- Reactivity -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Reactivity:"
+            android:layout_row="4"
+            android:layout_column="0"/>
+        <RatingBar
+            android:id="@+id/reactivity_rating"
+            android:layout_width="wrap_content"
+            android:numStars="5"
+            android:rating="0.0"
+            android:stepSize="1.0"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="1" />
+
+        <!-- Overall -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Overall:"
+            android:layout_row="5"
+            android:layout_column="0"/>
+        <RatingBar
+            android:id="@+id/overall_rating"
+            android:layout_width="wrap_content"
+            android:numStars="5"
+            android:rating="0.0"
+            android:stepSize="1.0"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="1" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="submit"
+            android:layout_row="6"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_columnSpan="2"/>
+    </GridLayout>
 </FrameLayout>

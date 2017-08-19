@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import com.persophone.collector.CollectorService;
 import com.persophone.collector.Logger;
 import com.persophone.collector.ProcessStarter;
+import com.persophone.collector.RequestHandler;
 import com.persophone.persophone_bottom.R;
 import com.persophone.shell.ProcessManager;
 import com.roughike.bottombar.BottomBar;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        RequestHandler.getInstance(this);
 
         // set bottom bar
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);

@@ -20,7 +20,7 @@ public class PhonesData {
         int deb = 2;
     }
 
-    public void GetPhonesData(final Response.Listener<JSONArray> callback){
+    public void GetAllPhonesData(final Response.Listener<JSONArray> callback){
 
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
                 (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phonesList", null, callback, new Response.ErrorListener() {
@@ -28,8 +28,6 @@ public class PhonesData {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        int m = 2;
-                        int m2 = 2;
                     }
                 });
 
@@ -38,21 +36,17 @@ public class PhonesData {
     }
 
     public void GetPhonesImage(String url, final ImageLoader.ImageListener listener){
-
         RequestHandler.getInstance(null).getImageLoader().get(url, listener);
-
     }
 
-    public void GetRecomendedPhones(String url, final Response.Listener<JSONArray> callback){
+    public void GetRecomendedPhones(final Response.Listener<JSONArray> callback){
 
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
                 (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/recommendedPhones", null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        int m = 2;
-                        int m2 = 2;
+
                     }
                 });
 

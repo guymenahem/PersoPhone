@@ -16,7 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.persophone.collector.PhonesData;
 import com.persophone.persophone_bottom.R;
+
+import org.json.JSONObject;
+
+import java.util.Iterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,11 +39,11 @@ import com.persophone.persophone_bottom.R;
 public class PhoneRecFragment extends Fragment{
 
     private static final String PHONE_NAME_PARAM = "PHONE_NAME";
-
+    private static final String PHONE_DATA_PARAM = "PHONE_DATA";
 
     private OnFragmentInteractionListener mListener;
 
-    String name;
+    public String name;
 
 
     public PhoneRecFragment() {
@@ -50,11 +57,26 @@ public class PhoneRecFragment extends Fragment{
      * @return A new instance of fragment PhoneRecFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PhoneRecFragment newInstance(String name) {
+    public static PhoneRecFragment newInstance(String name, JSONObject phoneData) {
         PhoneRecFragment fragment = new PhoneRecFragment();
         Bundle args = new Bundle();
         // add arguments to the fragment
         args.putString(PHONE_NAME_PARAM,name);
+
+        Iterator<String> keys = phoneData.keys();
+
+        while( keys.hasNext() ) {
+            String key = (String)keys.next();
+            try {
+                if (!(phoneData.getString(key).isEmpty())) {
+                    args.putString(key,phoneData.getString(key));
+                }
+            }
+            catch (Exception ex){
+
+            }
+        }
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,46 +100,37 @@ public class PhoneRecFragment extends Fragment{
         return inf;
     }
 
-    public void setPhone(View v){
-        switch (this.name){
-            case "Nexus 6p":
-                ((TextView)v.findViewById(R.id.phone_name)).setText("nexus 6p");
-                ((TextView)v.findViewById(R.id.screen_value)).setText("5.7");
-                ((TextView)v.findViewById(R.id.screen_upgrade)).setText("(+15%)");
-                ((TextView)v.findViewById(R.id.memory_value)).setText("3GB");
-                ((TextView)v.findViewById(R.id.memory_upgrade)).setText("(+50%)");
-                ((TextView)v.findViewById(R.id.storage_value)).setText("64GB");
-                ((TextView)v.findViewById(R.id.storage_upgrade)).setText("(+100%)");
-                ((TextView)v.findViewById(R.id.battery_value)).setText("3,450 mAh");
-                ((TextView)v.findViewById(R.id.battery_upgrade)).setText("(+17%)");
-                break;
+    private void setPhone(View v){
 
-            case "Iphone 7":
-                ((ImageView)v.findViewById(R.id.phone_image)).setImageResource(R.drawable.iphone7);
-                ((TextView)v.findViewById(R.id.phone_name)).setText("Iphone 7");
-                ((TextView)v.findViewById(R.id.screen_value)).setText("4.7");
-                ((TextView)v.findViewById(R.id.screen_upgrade)).setText("(+7%)");
-                ((TextView)v.findViewById(R.id.memory_value)).setText("2GB");
-                ((TextView)v.findViewById(R.id.memory_upgrade)).setText("(0)");
-                ((TextView)v.findViewById(R.id.storage_value)).setText("128GB");
-                ((TextView)v.findViewById(R.id.storage_upgrade)).setText("(+400%)");
-                ((TextView)v.findViewById(R.id.battery_value)).setText("1,960 mAh");
-                ((TextView)v.findViewById(R.id.battery_upgrade)).setText("(0%)");
-                break;
+        Bundle args = this.getArguments();
+        ((TextView)v.findViewById(R.id.phone_name)).setText(args.getString("name"));
+        ((TextView)v.findViewById(R.id.screen_value)).setText(args.getString("screen_resolution"));
+        ((TextView)v.findViewById(R.id.screen_upgrade)).setText("(+15%)");
+        ((TextView)v.findViewById(R.id.memory_value)).setText(args.getString("ram")+"GB");
+        ((TextView)v.findViewById(R.id.memory_upgrade)).setText("(+50%)");
+        ((TextView)v.findViewById(R.id.storage_value)).setText(args.getString("storage")+"GB");
+        ((TextView)v.findViewById(R.id.storage_upgrade)).setText("(+100%)");
+        ((TextView)v.findViewById(R.id.battery_value)).setText(args.getString("battery"));
+        ((TextView)v.findViewById(R.id.battery_upgrade)).setText("(+17%)");
 
-            case "Galaxy S7":
-                ((ImageView)v.findViewById(R.id.phone_image)).setImageResource(R.drawable.galaxy7s);
-                ((TextView)v.findViewById(R.id.phone_name)).setText("Galaxy 7S");
-                ((TextView)v.findViewById(R.id.screen_value)).setText("5.1");
-                ((TextView)v.findViewById(R.id.screen_upgrade)).setText("(+12%)");
-                ((TextView)v.findViewById(R.id.memory_value)).setText("4GB");
-                ((TextView)v.findViewById(R.id.memory_upgrade)).setText("(+100%)");
-                ((TextView)v.findViewById(R.id.storage_value)).setText("32GB");
-                ((TextView)v.findViewById(R.id.storage_upgrade)).setText("(0%)");
-                ((TextView)v.findViewById(R.id.battery_value)).setText("3,000 mAh");
-                ((TextView)v.findViewById(R.id.battery_upgrade)).setText("(+8%)");
-                break;
-        }
+        loadPicture(v, args.getString("image_url"));
+    }
+
+    private void loadPicture(View v,String Url) {
+        final View _v = v;
+        new PhonesData().GetPhonesImage(Url, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                if (response.getBitmap() != null){
+                    ((ImageView)_v.findViewById(R.id.phone_image)).setImageBitmap(response.getBitmap());
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

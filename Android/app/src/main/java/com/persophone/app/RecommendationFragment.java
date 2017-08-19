@@ -15,7 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Response;
+import com.persophone.collector.PhonesData;
 import com.persophone.persophone_bottom.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -61,7 +67,7 @@ public class RecommendationFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fillRecommendation();
-        pagerAdapter = new ReccomendationPagerAdapter(getFragmentManager(),this);
+
     }
 
     public void onCreateSwipe(){
@@ -74,10 +80,25 @@ public class RecommendationFragment extends Fragment{
 
     public void fillRecommendation(){
         this.recommendations = new ArrayList<PhoneRecFragment>();
+        final RecommendationFragment _this = this;
 
-        this.recommendations.add(PhoneRecFragment.newInstance("Nexus 6p"));
-        this.recommendations.add(PhoneRecFragment.newInstance("Iphone 7"));
-        this.recommendations.add(PhoneRecFragment.newInstance("Galaxy S7"));
+        pagerAdapter = new ReccomendationPagerAdapter(getFragmentManager(),_this);
+        new PhonesData().GetRecomendedPhones(new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject phone = response.getJSONObject(i);
+                        _this.recommendations.add(PhoneRecFragment.newInstance(phone.getString("name"), phone));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                //pagerAdapter = new ReccomendationPagerAdapter(getFragmentManager(),_this);
+                pagerAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public PhoneRecFragment getItem(int i){

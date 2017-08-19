@@ -104,7 +104,7 @@ public class PhoneRecFragment extends Fragment{
 
         Bundle args = this.getArguments();
         ((TextView)v.findViewById(R.id.phone_name)).setText(args.getString("name"));
-        ((TextView)v.findViewById(R.id.screen_value)).setText(args.getString("screen_resolution"));
+        ((TextView)v.findViewById(R.id.screen_value)).setText(args.getString("screen_size"));
         ((TextView)v.findViewById(R.id.screen_upgrade)).setText("(+15%)");
         ((TextView)v.findViewById(R.id.memory_value)).setText(args.getString("ram")+"GB");
         ((TextView)v.findViewById(R.id.memory_upgrade)).setText("(+50%)");
@@ -112,6 +112,7 @@ public class PhoneRecFragment extends Fragment{
         ((TextView)v.findViewById(R.id.storage_upgrade)).setText("(+100%)");
         ((TextView)v.findViewById(R.id.battery_value)).setText(args.getString("battery"));
         ((TextView)v.findViewById(R.id.battery_upgrade)).setText("(+17%)");
+        ((TextView)v.findViewById(R.id.price_value)).setText(args.getString("price"));
 
         loadPicture(v, args.getString("image_url"));
     }

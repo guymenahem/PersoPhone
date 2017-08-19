@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements
         ShareFragment.OnFragmentInteractionListener{
 
     public static Context con;
+    public int user_id;
 
 
     public MainActivity(){
@@ -71,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements
             alm.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), pi);
             alm.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), ProcessStarter.PROC_INTERVAL, pi);
         }
+
+        // Setting UserID
+        this.user_id = new UserPref(getApplicationContext()).getUserID();
+        Logger.writeToErrorLog("USER ID : " + this.user_id);
     }
 
 

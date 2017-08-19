@@ -1,5 +1,7 @@
 package com.persophone.collector;
 
+import android.os.Bundle;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -8,7 +10,10 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Random;
 
 /**
  * Created by Michael Goldenberg on 18/08/2017.
@@ -17,7 +22,7 @@ import org.json.JSONObject;
 public class PhonesData {
 
     public PhonesData(){
-        int deb = 2;
+
     }
 
     public void GetAllPhonesData(final Response.Listener<JSONArray> callback){
@@ -52,5 +57,20 @@ public class PhonesData {
 
         // Access the RequestQueue through your singleton class.
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
+    public JSONObject CalculateImprovmentFromCurrentPhone(Bundle args){
+        JSONObject improvement =  new JSONObject();
+
+        try {
+            improvement.put("ram_improvement",10);
+            improvement.put("storage_improvement",10 + new Random().nextInt(30));
+            improvement.put("battery_improvement",10 + new Random().nextInt(50));
+            improvement.put("screen_size_improvement",10 + new Random().nextInt(90));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return improvement;
     }
 }

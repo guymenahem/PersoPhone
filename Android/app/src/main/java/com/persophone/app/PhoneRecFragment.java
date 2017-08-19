@@ -102,17 +102,29 @@ public class PhoneRecFragment extends Fragment{
 
     private void setPhone(View v){
 
+
+        JSONObject jsnImprovement = new PhonesData().CalculateImprovmentFromCurrentPhone(this.getArguments());
+
         Bundle args = this.getArguments();
-        ((TextView)v.findViewById(R.id.phone_name)).setText(args.getString("name"));
-        ((TextView)v.findViewById(R.id.screen_value)).setText(args.getString("screen_size"));
-        ((TextView)v.findViewById(R.id.screen_upgrade)).setText("(+15%)");
-        ((TextView)v.findViewById(R.id.memory_value)).setText(args.getString("ram")+"GB");
-        ((TextView)v.findViewById(R.id.memory_upgrade)).setText("(+50%)");
-        ((TextView)v.findViewById(R.id.storage_value)).setText(args.getString("storage")+"GB");
-        ((TextView)v.findViewById(R.id.storage_upgrade)).setText("(+100%)");
-        ((TextView)v.findViewById(R.id.battery_value)).setText(args.getString("battery"));
-        ((TextView)v.findViewById(R.id.battery_upgrade)).setText("(+17%)");
-        ((TextView)v.findViewById(R.id.price_value)).setText(args.getString("price"));
+        try {
+            ((TextView)v.findViewById(R.id.phone_name)).setText(args.getString("name"));
+            ((TextView)v.findViewById(R.id.screen_value)).setText(args.getString("screen_size"));
+            ((TextView)v.findViewById(R.id.screen_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("screen_size_improvement")));
+
+            ((TextView)v.findViewById(R.id.memory_value)).setText(args.getString("ram")+"GB");
+            ((TextView)v.findViewById(R.id.memory_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("ram_improvement")));;
+
+            ((TextView)v.findViewById(R.id.storage_value)).setText(args.getString("storage")+"GB");
+            ((TextView)v.findViewById(R.id.storage_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("storage_improvement")));
+
+            ((TextView)v.findViewById(R.id.battery_value)).setText(args.getString("battery"));
+            ((TextView)v.findViewById(R.id.battery_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("battery_improvement")));
+
+            ((TextView)v.findViewById(R.id.price_value)).setText(args.getString("price"));
+        }
+        catch (Exception ex){
+
+        }
 
         loadPicture(v, args.getString("image_url"));
     }

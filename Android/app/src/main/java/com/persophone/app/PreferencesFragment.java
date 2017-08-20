@@ -7,8 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
+import com.android.volley.Response;
+import com.persophone.collector.PhonesData;
+import com.persophone.collector.UsersData;
 import com.persophone.persophone_bottom.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
 
 
 /**
@@ -28,6 +40,7 @@ public class PreferencesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Boolean isNew = true;
 
     private OnFragmentInteractionListener mListener;
 
@@ -56,17 +69,107 @@ public class PreferencesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+
+
+    }
+
+    private void fetchUserPreferences(View view) {
+        final View _view = view;
+        try {
+            new UsersData().GetUserPreferences(new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+                        if (response.length() == 1) {
+                            JSONObject myResponse = response.getJSONObject(0);
+                            isNew = false;
+                            Spinner OsSpinner = ((Spinner) _view.findViewById(R.id.spinnerOS));
+                            OsSpinner.setSelection(((ArrayAdapter) OsSpinner.getAdapter()).getPosition(myResponse.getString("operating_system")));
+
+                            Spinner BrandSpinner = ((Spinner) _view.findViewById(R.id.spinnerBrand));
+                            BrandSpinner.setSelection(((ArrayAdapter) BrandSpinner.getAdapter()).getPosition(myResponse.getString("brand")));
+
+                            Spinner ScreenSpinner = ((Spinner) _view.findViewById(R.id.spinnerScreen));
+                            ScreenSpinner.setSelection(((ArrayAdapter) ScreenSpinner.getAdapter()).getPosition(myResponse.getString("screen_size")));
+
+                            Spinner PriceSpinner = ((Spinner) _view.findViewById(R.id.spinnerPrice));
+                            PriceSpinner.setSelection(((ArrayAdapter) PriceSpinner.getAdapter()).getPosition(myResponse.getString("price")));
+                        }
+                        else{
+                            isNew = true;
+                        }
+
+                    }
+                    catch (Exception ex){
+
+                    }
+
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void saveUserPreferences(View view){
+        Spinner mySpinner=(Spinner) view.findViewById(R.id.spinnerBrand);
+        String brand_value = mySpinner.getSelectedItem().toString();
+
+        JSONObject requestData = new JSONObject();
+        mySpinner=(Spinner) view.findViewById(R.id.spinnerOS);
+        String os_value = mySpinner.getSelectedItem().toString();
+        mySpinner=(Spinner) view.findViewById(R.id.spinnerScreen);
+        String screen_value = mySpinner.getSelectedItem().toString();
+        mySpinner=(Spinner) view.findViewById(R.id.spinnerPrice);
+        String price_value = mySpinner.getSelectedItem().toString();
+
+        try {
+            requestData.put("user",10);
+            requestData.put("brand",brand_value.isEmpty() ? JSONObject.NULL : brand_value);
+            requestData.put("os",os_value.isEmpty() ? JSONObject.NULL : os_value);
+            requestData.put("screen",screen_value.isEmpty() ? JSONObject.NULL : screen_value);
+            requestData.put("price",price_value.isEmpty() ? JSONObject.NULL : price_value);
+            requestData.put("isNew",isNew);
+
+            new UsersData().SaveUserPreferences(requestData, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    isNew = false;
+                }
+            });
+        }
+        catch (Exception ex){
+
+        }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_preferences,
+                container, false);
+        addButtonOnClick(view);
+        fetchUserPreferences(view);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_preferences, container, false);
+        return view;
+    }
+
+    public void addButtonOnClick(View view){
+        Button button = (Button) view.findViewById(R.id.btnSubmit);
+        final View _view = view;
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                saveUserPreferences(_view);
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -12,5 +12,35 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- String for preferences slider -->
+    <string-array name="brands_array">
+        <item></item>
+        <item>Iphone</item>
+        <item>Samsung</item>
+        <item>LG</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="os_array">
+        <item></item>
+        <item>IOS</item>
+        <item>Android</item>
+    </string-array>
+
+    <string-array name="screen_size_array">
+        <item></item>
+        <item>Very Big</item>
+        <item>Regular</item>
+        <item>Small</item>
+    </string-array>
+
+    <string-array name="price_array">
+        <item></item>
+        <item>Unlimited</item>
+        <item>Average</item>
+        <item>Cheap</item>
+    </string-array>
+
+
 
 </resources>

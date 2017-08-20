@@ -27,14 +27,14 @@
 
                 <ImageView
                     android:layout_height="180dp"
-                    android:src="@drawable/nexus"
+                    android:src="@drawable/empty"
                     android:id="@+id/phone_image"
                     android:layout_width="150dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nexus 6p exmaple"
+                    android:text=""
                     android:textSize="12dp"
                     android:layout_marginLeft="20dp"
                     android:id="@+id/phone_name"/>

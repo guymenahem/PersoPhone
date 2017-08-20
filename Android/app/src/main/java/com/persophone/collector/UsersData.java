@@ -63,4 +63,37 @@ public class UsersData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
+
+    public void SaveUserRates(JSONObject data, final Response.Listener<JSONObject> callback){
+        int userid = 10;
+        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userRates");
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, baseURL, data, callback, null);
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
+    public void GetUserRates(final Response.Listener<JSONArray> callback) throws MalformedURLException {
+        // Create URL
+        int userid = 10;
+        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userRates");
+        String parameters = new String("user=" + userid);
+
+        URL reqUrl = new URL(baseURL + "?" + parameters);
+
+        JsonArrayRequest jsObjRequest = new JsonArrayRequest
+                (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
 }

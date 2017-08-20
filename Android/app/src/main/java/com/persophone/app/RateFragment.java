@@ -1,6 +1,7 @@
 package com.persophone.app;
 
 import android.content.Context;
+import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,8 +9,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.Spinner;
 
+import com.android.volley.Response;
+import com.persophone.collector.UsersData;
 import com.persophone.persophone_bottom.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
 
 
 /**
@@ -29,6 +41,7 @@ public class RateFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Boolean isNew = true;
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,11 +73,104 @@ public class RateFragment extends Fragment {
 
     }
 
+    public void addButtonOnClick(View view){
+        Button button = (Button) view.findViewById(R.id.btnSubmit);
+        final View _view = view;
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                saveUserRates(_view);
+            }
+        });
+    }
+
+    private void saveUserRates(View view){
+        JSONObject requestData = new JSONObject();
+
+        float batteryRating = ((RatingBar) view.findViewById(R.id.battery_rating)).getRating();
+        float screenRating = ((RatingBar) view.findViewById(R.id.screen_rating)).getRating();
+        float cameraRating = ((RatingBar) view.findViewById(R.id.camera_rating)).getRating();
+        float reactivityRating = ((RatingBar) view.findViewById(R.id.reactivity_rating)).getRating();
+        float overallRating = ((RatingBar) view.findViewById(R.id.overall_rating)).getRating();
+
+        try {
+            requestData.put("user",10);
+            requestData.put("phone_name","Nexus 6");
+            requestData.put("battery",batteryRating == 0.0 ? JSONObject.NULL : batteryRating);
+            requestData.put("screen",screenRating == 0.0 ? JSONObject.NULL : screenRating);
+            requestData.put("camera",cameraRating == 0.0 ? JSONObject.NULL : cameraRating);
+            requestData.put("reactivity",reactivityRating == 0.0 ? JSONObject.NULL : reactivityRating);
+            requestData.put("overall",overallRating == 0.0 ? JSONObject.NULL : overallRating);
+            requestData.put("isNew",isNew);
+
+            new UsersData().SaveUserRates(requestData, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    isNew = false;
+                }
+            });
+        }
+        catch (Exception ex){
+
+        }
+
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_rate,
+                container, false);
+        addButtonOnClick(view);
+        fetchUserRates(view);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rate, container, false);
+        return view;
+    }
+
+    private void fetchUserRates(View view) {
+        final View _view = view;
+        try {
+            new UsersData().GetUserRates(new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+                        if (response.length() == 1) {
+                            JSONObject myResponse = response.getJSONObject(0);
+                            isNew = false;
+
+                            RatingBar screenRating = ((RatingBar) _view.findViewById(R.id.screen_rating));
+                            screenRating.setRating(myResponse.isNull("screen") ? 0 : (float)myResponse.getDouble("screen"));
+
+                            RatingBar batteryRating = ((RatingBar) _view.findViewById(R.id.battery_rating));
+                            batteryRating.setRating(myResponse.isNull("battery") ? 0 : (float)myResponse.getDouble("battery"));
+
+                            RatingBar cameraRating = ((RatingBar) _view.findViewById(R.id.camera_rating));
+                            cameraRating.setRating(myResponse.isNull("camera") ? 0 : (float)myResponse.getDouble("camera"));
+
+                            RatingBar reactivityRating = ((RatingBar) _view.findViewById(R.id.reactivity_rating));
+                            reactivityRating.setRating(myResponse.isNull("reactivity") ? 0 : (float)myResponse.getDouble("reactivity"));
+
+                            RatingBar overallRating = ((RatingBar) _view.findViewById(R.id.overall_rating));
+                            overallRating.setRating(myResponse.isNull("overall") ? 0 : (float)myResponse.getDouble("overall"));
+                        }
+                        else{
+                            isNew = true;
+                        }
+
+                    }
+                    catch (Exception ex){
+
+                    }
+
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

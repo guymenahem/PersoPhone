@@ -5,13 +5,16 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,6 +28,8 @@ import com.persophone.shell.ProcessManager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import java.io.RandomAccessFile;
+
 
 public class MainActivity extends AppCompatActivity implements
         OnTabSelectListener,
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public static Context con;
     public int user_id;
+    private DevDetails devDetails;
 
 
     public MainActivity(){
@@ -78,6 +84,11 @@ public class MainActivity extends AppCompatActivity implements
         // Setting UserID
         this.user_id = new UserPref(getApplicationContext()).getUserID();
         Logger.writeToErrorLog("USER ID : " + this.user_id);
+
+
+        // Get User phone details
+        this.devDetails = new DevDetails(this);
+        // TODO : add save to API option
     }
 
 

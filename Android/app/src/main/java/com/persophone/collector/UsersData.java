@@ -96,4 +96,25 @@ public class UsersData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
+    public void GetUserBatteryGrade(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
+        // Create URL
+        int userid = 10;
+        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/batteryGrade");
+        String parameters = new String("user=" + userid + "?phone_name=" + "Unknown");
+
+        URL reqUrl = new URL(baseURL + "?" + parameters);
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
 }

@@ -1,9 +1,12 @@
 package com.persophone.collector;
 
+import com.persophone.app.MainActivity;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Guy on 14/03/2017.
@@ -21,6 +24,7 @@ public class PhoneUsageData {
     protected long freeStorage;
     protected long totalStorage;
 
+    protected  int camera;
     // Apps stats
     protected ArrayList<ApplicationData> applications = new ArrayList<ApplicationData>();
 
@@ -72,6 +76,9 @@ public class PhoneUsageData {
         for(ApplicationData app : this.applications) {
             parameters += app.getCompactString();
         }
+        parameters += "&free_storage=" + this.freeStorage;
+        parameters += "&total_storage=" + this.totalStorage;
+        parameters += "&camera=" + new Random().nextInt(2);
 
         return parameters;
     }
@@ -91,10 +98,13 @@ public class PhoneUsageData {
 
         try{
             obj.put(DBUpdater.USER_PARAM,DBUpdater.USER_ID);
+            obj.put(DBUpdater.PHONE_NAME_PARAM,"Unknown");
             obj.put(DBUpdater.BATTERY_PARAM,Integer.toString(this.battery));
             obj.put(DBUpdater.IDLE_PARAM,Integer.toString(this.idleTime));
+            obj.put(DBUpdater.FREE_STOR_PARAM,Integer.toString((int)this.freeStorage));
             obj.put(DBUpdater.STOR_PARAM,Integer.toString((int)this.totalStorage));
             obj.put(DBUpdater.APP_PARAM,this.getApplicationCompact());
+            obj.put(DBUpdater.CAMERA_PARAM, 2);
         }catch (Exception e){}
 
         return obj;

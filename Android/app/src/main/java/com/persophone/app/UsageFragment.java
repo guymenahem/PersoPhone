@@ -8,12 +8,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.persophone.collector.UsersData;
 import com.persophone.persophone_bottom.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
 import java.util.Date;
 
 
@@ -72,10 +79,31 @@ public class UsageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View inf = inflater.inflate(R.layout.fragment_usage, container, false);
-        this.fillGraphExample(inf);
+        final View view = inflater.inflate(R.layout.fragment_usage, container, false);
+        this.fillGraphExample(view);
+        try {
+            new UsersData().GetUserBatteryGrade(new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        double dGrade = response.getDouble("batteryGrade");
+                        // logic
+                        if (dGrade > 0  && dGrade < 0.3){
+                            ((TextView)view.findViewById(R.id.battery_usage)).setText("too critical per day");
+                            ((TextView)view.findViewById(R.id.battery_usage)).setText("critical");
+                            //((TextView)view.findViewById(R.id.battery_notification)).setHighlightColor("critical");
+                        }
 
-        return inf;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return view;
     }
 
     private void fillGraphExample(View v){

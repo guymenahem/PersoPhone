@@ -15,7 +15,7 @@ public class DevDetails {
 
     // Device details
     private String devName;
-    private String maniName;
+    private String mainName;
     private double batteryCap;
     private int devHeight;
     private int devWidth;
@@ -32,7 +32,7 @@ public class DevDetails {
     private void getUserDeviceDetails(){
         // Name
         String dev = this.getDeviceName();
-        this.maniName = dev.substring(0, dev.indexOf(" "));
+        this.mainName = dev.substring(0, dev.indexOf(" "));
         this.devName = dev.substring(dev.indexOf(" "));
 
         // Battery

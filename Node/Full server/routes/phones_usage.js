@@ -8,10 +8,13 @@ router.post('/',
         //var jsonReq = JSON.parse(req);
 
         var user_id = req.body.user;
+		var phone_name = req.body.phone_name;
         var battery = req.body.battery;
         var idle_time = req.body.idle;
         var appsuse = req.body.appsuse;
         var stor_used = req.body.stor_used;
+		var free_stor = req.body.free_stor;
+		var camera = req.body.camera;
         var stat = 'OK';
 
         var pg = require('pg');
@@ -24,8 +27,13 @@ router.post('/',
                     return console.error('error fetching client from pool', err);
                 }
                 client.query(
-                    'INSERT INTO phoneusage (user_id, battery_usage, idle_time,stor_used, apps_usage, time_stamp) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP);',
-                    [user_id, battery, idle_time, stor_used, appsuse],
+                    'INSERT INTO phoneusage (user_id, battery_usage, idle_time,stor_used, apps_usage, time_stamp) VALUES ($1, $3, $4, $5, $6, CURRENT_TIMESTAMP);' +
+					'INSERT INTO battery_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);' +					
+					'INSERT INTO cpu_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $4,  CURRENT_TIMESTAMP);' +
+					'INSERT INTO storage_usage(user_id, phone_name, total_storage, free_storage, insertion_time) VALUES ($1, $2, $5,$6, CURRENT_TIMESTAMP);' +
+					'INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $7, CURRENT_TIMESTAMP);' +
+					'INSERT INTO camera_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $8, CURRENT_TIMESTAMP);' +,
+                    [user_id, phone_name, battery, idle_time, stor_used,free_stor, appsuse, camera ],
                     function(err, result) {
                         done();
 

@@ -47,9 +47,13 @@ public class DBUpdater /*extends Thread*/ {
     public static final String USER_ID = "555";
     public static final String APP_PARAM = "appsuse";
     public static final String USER_PARAM = "user";
+    public static final String PHONE_NAME_PARAM = "phone_name";
     public static final String BATTERY_PARAM = "battery";
     public static final String IDLE_PARAM = "idle";
+    public static final String FREE_STOR_PARAM = "free_stor";
     public static final String STOR_PARAM = "stor_used";
+    public static final String CAMERA_PARAM = "camera";
+
 
     protected PhoneUsageData phoneUsageData;
     protected int mode = 0;

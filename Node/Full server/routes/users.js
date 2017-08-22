@@ -184,6 +184,50 @@ router.get('/userPreferences', function (req, res) {
 		);
 });
 
+router.get('/batteryGrade', function (req, res) {
+		var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        var user_id = req.query.user;
+		var phone_name = req.query.phone_name;	
+		console.log(user_id);
+        pg.connect(conString,
+            function(err, client, done) {
+                if (err) {					
+					return console.log("ERR MISHK");
+                    //return console.error('error fetching client from pool', err);
+                }
+                client.query('SELECT * FROM battery_usage where user_id = $1 and phone_name = $2 order by insertion time asc;',
+                    [user_id, phone_name],
+                    function(err, result) {
+                        done();
+						
+						var rows = result.rows;
+						
+						if (rows.length > 0){
+							var deltas = [];
+							
+							for (var i=0; i<rows.length-1; i++){
+								if (rows[i+1].value < rows[i].value){
+									deltas.push(value);
+								}
+							}
+						}
+						
+						var grade = 1;
+						
+
+                        if (err) {
+                            return console.error('error happened during query', err);
+                        }
+                        console.log("GET userPreferences succeed");
+						res.send({"batteryGrade":grade});
+                    }
+				);
+            }
+		);
+});
+
 /* GET ALL Users ID */
 router.get('/listIds', function (req, res) {
 

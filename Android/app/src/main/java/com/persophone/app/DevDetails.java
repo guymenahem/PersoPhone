@@ -48,7 +48,7 @@ public class DevDetails {
         this.fillCPUDetails();
     }
 
-    private String getDeviceName() {
+    public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {
@@ -70,7 +70,7 @@ public class DevDetails {
         }
     }
 
-    private double getBatteryCapacity() {
+    public double getBatteryCapacity() {
         Object mPowerProfile_ = null;
 
         final String POWER_PROFILE_CLASS = "com.android.internal.os.PowerProfile";

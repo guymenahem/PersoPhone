@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.persophone.app.MainActivity;
+import com.persophone.app.UsersData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -118,7 +119,7 @@ public class DBUpdater /*extends Thread*/ {
         try {
 
             // Create URL
-            int userid = 10;
+            int userid = UsersData.CurrentUserId;
             String baseURL = new String("http://ec2-35-157-110-69.eu-central-1.compute.amazonaws.com/phoneUsage");
 
             // setting URL data
@@ -154,8 +155,8 @@ public class DBUpdater /*extends Thread*/ {
             String jAppUsage = new String("");
 
             // Create URL
-            int userid = 10;
-            String baseURL = new String("http://ec2-35-157-110-69.eu-central-1.compute.amazonaws.com/phoneUsage");
+            int userid = UsersData.CurrentUserId;
+            String baseURL = new String("http://ec2-35-157-110-69.eu-central-1.compute.amazonaws.com/phoneUsage/");
             String parameters = new String("user=" + userid);
 
             URL persoNode = new URL(baseURL + "?" + parameters);

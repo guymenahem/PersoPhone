@@ -1,21 +1,16 @@
 package com.persophone.app;
 
 import android.content.Context;
-import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RatingBar;
-import android.widget.Spinner;
 
 import com.android.volley.Response;
-import com.persophone.collector.UsersData;
 import com.persophone.persophone_bottom.R;
 
 import org.json.JSONArray;

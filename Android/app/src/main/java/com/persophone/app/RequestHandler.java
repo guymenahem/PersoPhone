@@ -1,4 +1,4 @@
-package com.persophone.collector;
+package com.persophone.app;
 
 import android.content.Context;
 import android.graphics.Bitmap;

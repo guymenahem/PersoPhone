@@ -197,10 +197,14 @@ router.get('/batteryGrade', function (req, res) {
 					return console.log("ERR MISHK");
                     //return console.error('error fetching client from pool', err);
                 }
-                client.query('SELECT * FROM battery_usage where user_id = $1 and phone_name = $2 order by insertion time asc;',
+                client.query('SELECT * FROM battery_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
                     [user_id, phone_name],
                     function(err, result) {
                         done();
+																	
+                        if (err) {
+                            return console.error('error happened during query', err);
+                        }
 						
 						var rows = result.rows;
 						
@@ -214,12 +218,8 @@ router.get('/batteryGrade', function (req, res) {
 							}
 						}
 						
-						var grade = 1;
+						var grade = 0;
 						
-
-                        if (err) {
-                            return console.error('error happened during query', err);
-                        }
                         console.log("GET userPreferences succeed");
 						res.send({"batteryGrade":grade});
                     }

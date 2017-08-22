@@ -39,7 +39,7 @@ public class UserPref {
 
     private int getNewUserID(){
         // TODO : ADD query from API
-        return -555;
+        return 10;
     }
 
     public int getUserID(){

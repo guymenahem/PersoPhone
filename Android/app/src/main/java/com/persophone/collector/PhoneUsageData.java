@@ -1,6 +1,9 @@
 package com.persophone.collector;
 
+import com.persophone.app.DevDetails;
 import com.persophone.app.MainActivity;
+import com.persophone.app.UsageFragment;
+import com.persophone.app.UsersData;
 
 import org.json.JSONObject;
 
@@ -98,7 +101,7 @@ public class PhoneUsageData {
 
         try{
             obj.put(DBUpdater.USER_PARAM,DBUpdater.USER_ID);
-            obj.put(DBUpdater.PHONE_NAME_PARAM,"Unknown");
+            obj.put(DBUpdater.PHONE_NAME_PARAM, UsersData.CurrentUserDevDetails.getDeviceName());
             obj.put(DBUpdater.BATTERY_PARAM,Integer.toString(this.battery));
             obj.put(DBUpdater.IDLE_PARAM,Integer.toString(this.idleTime));
             obj.put(DBUpdater.FREE_STOR_PARAM,Integer.toString((int)this.freeStorage));

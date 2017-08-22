@@ -32,7 +32,7 @@ router.post('/',
 					'INSERT INTO cpu_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $4,  CURRENT_TIMESTAMP);' +
 					'INSERT INTO storage_usage(user_id, phone_name, total_storage, free_storage, insertion_time) VALUES ($1, $2, $5,$6, CURRENT_TIMESTAMP);' +
 					'INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $7, CURRENT_TIMESTAMP);' +
-					'INSERT INTO camera_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $8, CURRENT_TIMESTAMP);' +,
+					'INSERT INTO camera_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $8, CURRENT_TIMESTAMP);',
                     [user_id, phone_name, battery, idle_time, stor_used,free_stor, appsuse, camera ],
                     function(err, result) {
                         done();

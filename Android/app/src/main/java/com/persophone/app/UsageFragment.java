@@ -1,7 +1,6 @@
 package com.persophone.app;
 
 import android.content.Context;
-import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,14 +13,12 @@ import com.android.volley.Response;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.persophone.collector.UsersData;
 import com.persophone.persophone_bottom.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
-import java.util.Date;
 
 
 /**
@@ -88,7 +85,7 @@ public class UsageFragment extends Fragment {
                     try {
                         double dGrade = response.getDouble("batteryGrade");
                         // logic
-                        if (dGrade > 0  && dGrade < 0.3){
+                        if (dGrade >= 0  && dGrade < 0.3){
                             ((TextView)view.findViewById(R.id.battery_usage)).setText("too critical per day");
                             ((TextView)view.findViewById(R.id.battery_usage)).setText("critical");
                             //((TextView)view.findViewById(R.id.battery_notification)).setHighlightColor("critical");

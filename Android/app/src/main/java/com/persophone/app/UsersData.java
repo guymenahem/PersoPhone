@@ -1,23 +1,16 @@
-package com.persophone.collector;
-
-import android.os.Bundle;
+package com.persophone.app;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Random;
 
 /**
  * Created by Michael Goldenberg on 18/08/2017.
@@ -25,12 +18,15 @@ import java.util.Random;
 
 public class UsersData {
 
+    public static int CurrentUserId;
+    public static DevDetails CurrentUserDevDetails;
+
     public UsersData(){
 
     }
 
     public void SaveUserPreferences(JSONObject data, final Response.Listener<JSONObject> callback){
-        int userid = 10;
+        int userid = CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userPreferences");
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -44,7 +40,7 @@ public class UsersData {
 
     public void GetUserPreferences(final Response.Listener<JSONArray> callback) throws MalformedURLException {
         // Create URL
-        int userid = 10;
+        int userid = CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userPreferences");
         String parameters = new String("user=" + userid);
 
@@ -65,7 +61,7 @@ public class UsersData {
 
 
     public void SaveUserRates(JSONObject data, final Response.Listener<JSONObject> callback){
-        int userid = 10;
+        int userid = CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userRates");
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -77,7 +73,7 @@ public class UsersData {
 
     public void GetUserRates(final Response.Listener<JSONArray> callback) throws MalformedURLException {
         // Create URL
-        int userid = 10;
+        int userid = CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userRates");
         String parameters = new String("user=" + userid);
 
@@ -98,9 +94,9 @@ public class UsersData {
 
     public void GetUserBatteryGrade(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
         // Create URL
-        int userid = 10;
+        int userid = UsersData.CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/batteryGrade");
-        String parameters = new String("user=" + userid + "?phone_name=" + "Unknown");
+        String parameters = new String("user=" + userid + "&phone_name=" + "Unknown");
 
         URL reqUrl = new URL(baseURL + "?" + parameters);
 

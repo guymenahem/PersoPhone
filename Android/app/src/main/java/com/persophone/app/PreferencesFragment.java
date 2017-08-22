@@ -12,12 +12,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.android.volley.Response;
-import com.persophone.collector.PhonesData;
-import com.persophone.collector.UsersData;
 import com.persophone.persophone_bottom.R;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -125,7 +122,7 @@ public class PreferencesFragment extends Fragment {
         String price_value = mySpinner.getSelectedItem().toString();
 
         try {
-            requestData.put("user",10);
+            requestData.put("user",UsersData.CurrentUserId);
             requestData.put("brand",brand_value.isEmpty() ? JSONObject.NULL : brand_value);
             requestData.put("os",os_value.isEmpty() ? JSONObject.NULL : os_value);
             requestData.put("screen",screen_value.isEmpty() ? JSONObject.NULL : screen_value);

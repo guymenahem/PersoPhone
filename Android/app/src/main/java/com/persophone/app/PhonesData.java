@@ -1,13 +1,13 @@
-package com.persophone.collector;
+package com.persophone.app;
 
 import android.os.Bundle;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.persophone.app.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

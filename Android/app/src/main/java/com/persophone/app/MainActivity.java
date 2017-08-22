@@ -2,19 +2,15 @@ package com.persophone.app;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,13 +18,9 @@ import android.view.MenuItem;
 import com.persophone.collector.CollectorService;
 import com.persophone.collector.Logger;
 import com.persophone.collector.ProcessStarter;
-import com.persophone.collector.RequestHandler;
 import com.persophone.persophone_bottom.R;
-import com.persophone.shell.ProcessManager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import java.io.RandomAccessFile;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -83,11 +75,16 @@ public class MainActivity extends AppCompatActivity implements
 
         // Setting UserID
         this.user_id = new UserPref(getApplicationContext()).getUserID();
+        UsersData.CurrentUserId = this.user_id;
         Logger.writeToErrorLog("USER ID : " + this.user_id);
 
 
         // Get User phone details
         this.devDetails = new DevDetails(this);
+
+        UsersData.CurrentUserDevDetails = this.devDetails;
+
+
         // TODO : add save to API option
     }
 

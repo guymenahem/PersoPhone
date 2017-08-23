@@ -62,7 +62,7 @@ public class UsersData {
 
     public  void LogCurrentUserCameraUse(){
         int userid = CurrentUserId;
-        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/phone_usage/logCameraUse");
+        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/phones_usage/logCameraUse");
         JSONObject data = new JSONObject();
 
         try {

@@ -45,6 +45,7 @@ router.post('/',
 				[user_id,phone_name, appsuse]);
 				
 				var count = 5;
+				var originalCount = 5;
 				query1.on('end', endHandler);
 				query2.on('end', endHandler);
 				query3.on('end', endHandler);
@@ -54,7 +55,7 @@ router.post('/',
 				function endHandler () {
 				   count--; // decrement count by 1
 				   if (count === 0) {
-					   console.log("done all 6 insert queries")
+					   console.log("done all "+ originalCount +" insert queries")
 					   // two queries have ended, lets close the connection.
 					   res.send("OK");
 				   }

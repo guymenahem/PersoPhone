@@ -7,6 +7,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -54,6 +55,26 @@ public class UsersData {
                         // TODO Auto-generated method stub
                     }
                 });
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
+    public  void LogCurrentUserCameraUse(){
+        int userid = CurrentUserId;
+        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/phone_usage/logCameraUse");
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("user",CurrentUserId);
+            data.put("phone_name",CurrentUserDevDetails.getDeviceName());
+            data.put("camera",1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, baseURL, data, null, null);
 
         // Access the RequestQueue through your singleton class.
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);

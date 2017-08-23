@@ -44,16 +44,12 @@ router.post('/',
 				var query5 = client.query('INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
 				[user_id,phone_name, appsuse]);
 				
-				var query6 = client.query('INSERT INTO camera_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
-				[user_id,phone_name, camera]);
-				
-				var count = 6;
+				var count = 5;
 				query1.on('end', endHandler);
 				query2.on('end', endHandler);
 				query3.on('end', endHandler);
 				query4.on('end', endHandler);
 				query5.on('end', endHandler);
-				query6.on('end', endHandler);
 
 				function endHandler () {
 				   count--; // decrement count by 1
@@ -62,6 +58,38 @@ router.post('/',
 					   // two queries have ended, lets close the connection.
 					   res.send("OK");
 				   }
+				}
+            });
+    });
+	
+	router.post('/logCameraUse',
+    function(req, res) {
+
+        var user_id = req.body.user;
+		var phone_name = req.body.phone_name;
+		var camera = req.body.camera;
+        var stat = 'OK';
+
+        var pg = require('pg');
+        var conString =
+            'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres'; // make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function(err, client, done) {
+                if (err) {
+                    return console.error('error fetching client from pool', err);
+                }				
+				
+				var query = client.query('INSERT INTO camera_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
+				[user_id,phone_name, camera]);
+							
+				query.on('end', endHandler);
+
+				function endHandler () {
+				   console.log("done logging camera use")
+				   // two queries have ended, lets close the connection.
+				   res.send("OK");
+				   
 				}
             });
     });

@@ -73,16 +73,13 @@ public class MainActivity extends AppCompatActivity implements
             alm.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), ProcessStarter.PROC_INTERVAL, pi);
         }
 
-        // Setting UserID
-        this.user_id = new UserPref(getApplicationContext()).getUserID();
-        UsersData.CurrentUserId = this.user_id;
-        Logger.writeToErrorLog("USER ID : " + this.user_id);
-
-
         // Get User phone details
         this.devDetails = new DevDetails(this);
 
         UsersData.CurrentUserDevDetails = this.devDetails;
+
+        // Setting UserID
+        new UserPref(getApplicationContext()).getUserID();
 
 
         // TODO : add save to API option

@@ -91,8 +91,8 @@ public class RateFragment extends Fragment {
         float overallRating = ((RatingBar) view.findViewById(R.id.overall_rating)).getRating();
 
         try {
-            requestData.put("user",10);
-            requestData.put("phone_name","Nexus 6");
+            requestData.put("user",UsersData.CurrentUserId);
+            requestData.put("phone_name",UsersData.CurrentUserDevDetails.getDeviceName());
             requestData.put("battery",batteryRating == 0.0 ? JSONObject.NULL : batteryRating);
             requestData.put("screen",screenRating == 0.0 ? JSONObject.NULL : screenRating);
             requestData.put("camera",cameraRating == 0.0 ? JSONObject.NULL : cameraRating);

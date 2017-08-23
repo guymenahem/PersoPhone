@@ -7,6 +7,52 @@ router.get('/', function (req, res) {
     res.send('OK 200');
 });
 
+router.post('/newUser',
+    function(req, res) {
+        //var jsonReq = JSON.parse(req);
+
+        var user_name = req.body.user_name;
+		var phone_name = req.body.phone_name;
+        var user_email = req.body.email;
+
+        var pg = require('pg');
+        var conString =
+            'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres'; // make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function(err, client, done) {
+                if (err) {
+                    return console.error('error fetching client from pool', err);
+                }				
+				var params = [user_name, phone_name];
+				console.log("all parameters: " + params.toString());
+				var users_sequenceText = "'users_sequence'";
+				var nextValQuery = client.query('select nextval(' + users_sequenceText + ') as sequence_value',[],function(err, result) {
+					done();
+
+					if (err) {
+						return console.error('error happened during query', err);
+					}
+					
+					var seq_val = result.rows[0].sequence_value;
+					
+					var query = client.query('INSERT INTO users(id, name, password, mail, isadmin, phone_name) VALUES ($1, $2, $3, $4, $5,$6);',
+					[seq_val,user_name, "", user_email, false, phone_name]);
+							
+					query.on('end', endHandler);
+
+					function endHandler () {
+					   console.log("done all 6 insert queries")
+					   // sends the new user_id
+					   res.send({user_id:seq_val});
+					}
+				})
+				
+            });
+    }
+);
+
+
 router.post('/userRates', function (req, res) {
 	
 	var user_id = req.body.user;

@@ -80,6 +80,27 @@ public class UsersData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
+    public  void NewUser(final Response.Listener<JSONObject> callback){
+        int userid = CurrentUserId;
+        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/newUser");
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("user_name","MMM");
+            data.put("phone_name",CurrentUserDevDetails.getDeviceName());
+            data.put("email","somemail@gmail.com");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, baseURL, data, callback, null);
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
 
     public void SaveUserRates(JSONObject data, final Response.Listener<JSONObject> callback){
         int userid = CurrentUserId;

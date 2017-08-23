@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.android.volley.Response;
 import com.persophone.collector.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Guy on 8/19/2017.
@@ -29,17 +33,31 @@ public class UserPref {
 
         if (this.userid == -999){
             Logger.writeToErrorLog("Get New USER ID");
-            this.userid = this.getNewUserID();
-            SharedPreferences.Editor editor = this.settings.edit();
-            editor.putInt(USER_ID_KEY, this.userid);
-            editor.commit();
-
+            getNewUserID();
+        }else{
+            UsersData.CurrentUserId = this.userid;
         }
     }
 
-    private int getNewUserID(){
+    private void getNewUserID(){
+        final UserPref _this = this;
         // TODO : ADD query from API
-        return 10;
+        new UsersData().NewUser(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    _this.userid = response.getInt("user_id");
+                    UsersData.CurrentUserId = _this.userid;
+                    SharedPreferences.Editor editor = _this.settings.edit();
+                    editor.putInt(USER_ID_KEY, _this.userid);
+                    editor.commit();
+                    Logger.writeToErrorLog("USER ID : " + _this.userid);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     public int getUserID(){

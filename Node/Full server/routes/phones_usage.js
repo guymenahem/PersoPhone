@@ -25,27 +25,44 @@ router.post('/',
             function(err, client, done) {
                 if (err) {
                     return console.error('error fetching client from pool', err);
-                }
-                client.query(
-                    'INSERT INTO phoneusage (user_id, battery_usage, idle_time,stor_used, apps_usage, time_stamp) VALUES ($1, $3, $4, $5, $6, CURRENT_TIMESTAMP);' +
-					'INSERT INTO battery_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);' +					
-					'INSERT INTO cpu_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $4,  CURRENT_TIMESTAMP);' +
-					'INSERT INTO storage_usage(user_id, phone_name, total_storage, free_storage, insertion_time) VALUES ($1, $2, $5,$6, CURRENT_TIMESTAMP);' +
-					'INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $7, CURRENT_TIMESTAMP);' +
-					'INSERT INTO camera_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $8, CURRENT_TIMESTAMP);',
-                    [user_id, phone_name, battery, idle_time, stor_used,free_stor, appsuse, camera ],
-                    function(err, result) {
-                        done();
+                }				
+				var params = [user_id, phone_name, battery, idle_time, stor_used,free_stor, appsuse, camera];
+				console.log("all parameters: " + params.toString());
+				
+				var query1 = client.query('INSERT INTO phoneusage (user_id, battery_usage, idle_time,stor_used, apps_usage, time_stamp) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP);',
+				[user_id, battery, idle_time, stor_used, appsuse]);
+				
+				var query2 = client.query('INSERT INTO battery_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
+				[user_id,phone_name, battery]);
+				
+				var query3 = client.query('INSERT INTO cpu_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3,  CURRENT_TIMESTAMP);',
+				[user_id,phone_name,idle_time]);
+				
+				var query4 = client.query('INSERT INTO storage_usage(user_id, phone_name, total_storage, free_storage, insertion_time) VALUES ($1, $2, $3,$4, CURRENT_TIMESTAMP);',
+				[user_id,phone_name,stor_used,free_stor]);
+				
+				var query5 = client.query('INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
+				[user_id,phone_name, appsuse]);
+				
+				var query6 = client.query('INSERT INTO camera_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
+				[user_id,phone_name, camera]);
+				
+				var count = 6;
+				query1.on('end', endHandler);
+				query2.on('end', endHandler);
+				query3.on('end', endHandler);
+				query4.on('end', endHandler);
+				query5.on('end', endHandler);
+				query6.on('end', endHandler);
 
-                        if (err) {
-                            console.error('error happened during query', err);
-                            stat = 'ERROR';
-                            res.send("ERROR");
-                        }
-                        if (done) {
-                            res.send("OK");
-                        }
-                    });
+				function endHandler () {
+				   count--; // decrement count by 1
+				   if (count === 0) {
+					   console.log("done all 6 insert queries")
+					   // two queries have ended, lets close the connection.
+					   res.send("OK");
+				   }
+				}
             });
     });
 

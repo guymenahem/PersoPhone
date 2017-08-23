@@ -43,7 +43,7 @@ public class DBUpdater /*extends Thread*/ {
     public static final int GET_DATA = 1;
     public static final int SEND_DATA = 2;
     public static final String URL_APP_SERVER = "http://ec2-35-157-26-139.eu-central-1.compute.amazonaws.com/";
-    public static final String URL_ADD_POST_APP = "phoneUsage";
+    public static final String URL_ADD_POST_APP = "phones_usage";
 
     public static final String USER_ID = "555";
     public static final String APP_PARAM = "appsuse";
@@ -218,10 +218,10 @@ public class DBUpdater /*extends Thread*/ {
 
     public void saveData1(){
 
+        android.os.Debug.waitForDebugger();
 
 
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, URL_APP_SERVER + URL_ADD_POST_APP,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, URL_APP_SERVER + URL_ADD_POST_APP +"/",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

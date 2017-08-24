@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.persophone.app.UsersData;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -23,6 +25,7 @@ public class CollectorService extends Service {
     PhoneUsageData phoneUsageData = new PhoneUsageData();
     ApplicationCollector applicationCollector = new ApplicationCollector(this.phoneUsageData.getApplicationData());
     StorageCollector storageCollector = new StorageCollector();
+    CameraCollector cameraCollector = new CameraCollector();
 
     DBUpdater DBUpdater;
 
@@ -34,7 +37,7 @@ public class CollectorService extends Service {
 
     public int onStartCommand (Intent intent, int flags, int startId) {
 
-        // android.os.Debug.waitForDebugger();
+        android.os.Debug.waitForDebugger();
 
         this.collect();
         this.send();
@@ -45,6 +48,10 @@ public class CollectorService extends Service {
 
     private void send(){
 
+        if (this.cameraCollector.getNumOfNew() > 1){
+            new UsersData().LogCurrentUserCameraUse(this.cameraCollector.getNumOfNew());
+        }
+
         if(!DBUpdater.getInstance().isConnectionSet()){
             DBUpdater.getInstance().setQueueAndConnection(this);
         }
@@ -52,43 +59,6 @@ public class CollectorService extends Service {
         DBUpdater.getInstance().saveData1();
     }
 
-    /*private void send(){
-
-        Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-
-                        // Create URL
-                        int userid = 100;
-                        String baseURL = new String("http://ec2-35-157-26-139.eu-central-1.compute.amazonaws.com/logSignal");
-
-                        // setting URL data
-                        String parameters = new String("user=" + userid);
-                        URL persoNode = new URL(baseURL + "?" + parameters);
-
-                        // Create connection
-                        HttpURLConnection myConnection =
-                                (HttpURLConnection) persoNode.openConnection();
-
-
-                        myConnection.setRequestMethod("POST");
-
-                        if (myConnection.getResponseCode() == 200) {
-                            Log.e("HTTP", "Save data to DB");
-                        } else {
-                            Log.e("HTTP", "ERROR save toDB");
-                        }
-
-                    } catch (Exception e) {
-                        Log.e("HTTP:", e.getMessage());
-                    }
-                }
-            });
-
-        Logger.writeToErrorLog("write signal");
-        thread.start();
-    }*/
 
     private void collect() {
 
@@ -108,6 +78,9 @@ public class CollectorService extends Service {
         this.storageCollector.collectStorageStatus();
         this.phoneUsageData.setTotalStorage(this.storageCollector.getTotalStorage());
         this.phoneUsageData.setFreeStorage(this.storageCollector.getFreeStorage());
+
+        // set Camera
+        this.cameraCollector.CollectCameraStat();
 
         DBUpdater.getInstance().setPhoneUsage(this.phoneUsageData);
     }

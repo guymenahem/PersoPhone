@@ -60,7 +60,7 @@ public class UsersData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
-    public  void LogCurrentUserCameraUse(){
+    public  void LogCurrentUserCameraUse(int numOfPhotos){
         int userid = CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/phones_usage/logCameraUse");
         JSONObject data = new JSONObject();
@@ -68,7 +68,7 @@ public class UsersData {
         try {
             data.put("user",CurrentUserId);
             data.put("phone_name",CurrentUserDevDetails.GetDeviceName());
-            data.put("camera",1);
+            data.put("camera",numOfPhotos);
         } catch (JSONException e) {
             e.printStackTrace();
         }

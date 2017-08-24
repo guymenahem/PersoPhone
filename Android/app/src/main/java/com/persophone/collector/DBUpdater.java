@@ -218,7 +218,7 @@ public class DBUpdater /*extends Thread*/ {
 
     public void saveData1(){
 
-        android.os.Debug.waitForDebugger();
+        //android.os.Debug.waitForDebugger();
 
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, URL_APP_SERVER + URL_ADD_POST_APP +"/",

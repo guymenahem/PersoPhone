@@ -1,44 +1,45 @@
 package com.persophone.collector;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Camera;
-import android.hardware.camera2.CameraManager;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+
+import java.io.File;
 
 /**
- * Created by m on 22/08/2017.
+ * Created by Guy on 8/24/2017.
  */
 
 public class CameraCollector {
 
-        private int lastBattery;
+    int lastSampPics;
+    int newPics;
 
-        public CameraCollector(){
-            this.lastBattery = -1;
+    public CameraCollector(){
+
+    }
+
+    public void CollectCameraStat(){
+        int numOfPhotos = 0;
+
+        // File representing the folder that you select using a FileChooser
+        File dir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM + "/CAMERA").getAbsolutePath());
+
+        if(dir.exists() && dir.isDirectory() && dir.canRead()){
+            try{numOfPhotos = dir.listFiles().length;}
+            catch(Exception e){}
+        }else{
+            Log.e("TTEESSTT","File NOT exist or not directory or not readable");
         }
 
-        protected void collectCameraStatus(Context context) {
+        this.newPics = numOfPhotos - this.lastSampPics;
+        this.lastSampPics = numOfPhotos;
+    }
 
-            Camera cam = new Camera();
-            //CameraManager.AvailabilityCallback
-            // get Intent
-            IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-            Intent batteryStatus = context.registerReceiver(null, ifilter);
-
-            // get battery precent
-
-            int level = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1);
-            int scale = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1);
-
-            float batteryPct = level / (float)scale;
-
-            //return value
-            this.lastBattery = (int)(batteryPct*100);
-        }
-
-        protected int getCameraStatues(){
-            return this.lastBattery;
-        }
-
+    public int getNumOfNew(){
+        return this.newPics;
+    }
 }

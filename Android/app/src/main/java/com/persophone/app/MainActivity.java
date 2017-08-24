@@ -1,13 +1,18 @@
 package com.persophone.app;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.IdRes;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, UsageFragment.newInstance("",""), "Wellcome")
+                    .add(R.id.fragment_container, UsageFragment.newInstance("", ""), "Wellcome")
                     .commit();
         }
 
@@ -83,8 +88,27 @@ public class MainActivity extends AppCompatActivity implements
 
 
         // TODO : add save to API option
+
+        // Check if user have camera - if no ask
+        this.getUserStoragePermission();
     }
 
+    private void getUserStoragePermission(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Logger.writeToErrorLog("DONT Have permission to get camera details");
+                try{requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);}
+                catch(Exception e){Logger.writeToErrorLog(e.toString());}
+            }
+        } else {
+            int permissionWriteExternal = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permissionWriteExternal != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
+        }
+    }
 
 
     @Override

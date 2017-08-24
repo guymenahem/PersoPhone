@@ -18,7 +18,8 @@ public class CameraCollector {
     int newPics;
 
     public CameraCollector(){
-
+        this.CollectCameraStat();
+        this.newPics = 0;
     }
 
     public void CollectCameraStat(){

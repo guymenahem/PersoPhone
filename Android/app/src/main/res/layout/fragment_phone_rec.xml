@@ -82,6 +82,36 @@
                 android:layout_row="0"
                 android:layout_column="2"/>
 
+            <!-- Screen Resolutoin Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=' Resolutoin : '
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="0"/>
+
+            <!-- Screen Resolutoin -->
+            <TextView
+                android:id="@+id/screen_res_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='5.5"'
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="1" />
+
+            <!-- Screen Resolutoin Upgrade -->
+            <TextView
+                android:id="@+id/screen_res_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(+15%)"
+                android:textColor="@color/upgrade_green"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="1"
+                android:layout_column="2"/>
+
             <!-- Memory -->
             <!-- Memory title -->
             <TextView
@@ -89,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:text=" RAM: "
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="1"
+                android:layout_row="2"
                 android:layout_column="0"/>
 
             <!-- Memory value -->
@@ -99,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:text="8GB"
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="1"
+                android:layout_row="2"
                 android:layout_column="1"/>
 
             <!-- Memory upgrade -->
@@ -110,7 +140,7 @@
                 android:text="(+25%)"
                 android:textColor="@color/upgrade_green"
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="1"
+                android:layout_row="2"
                 android:layout_column="2"/>
 
             <!-- Storage -->
@@ -120,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:text=" Storage: "
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="2"
+                android:layout_row="3"
                 android:layout_column="0"/>
 
             <!-- Storage Value -->
@@ -130,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:text="64GB"
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="2"
+                android:layout_row="3"
                 android:layout_column="1"/>
 
             <!-- Storage upgrade -->
@@ -141,7 +171,7 @@
                 android:text="(+50%)"
                 android:textColor="@color/upgrade_green"
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="2"
+                android:layout_row="3"
                 android:layout_column="2"/>
 
             <!-- Battery -->
@@ -151,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:text=" Battery: "
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="3"
+                android:layout_row="4"
                 android:layout_column="0"/>
 
             <!-- Battery value -->
@@ -161,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:text=" 3000 mAh "
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="3"
+                android:layout_row="4"
                 android:layout_column="1"/>
 
             <TextView
@@ -171,8 +201,56 @@
                 android:text="(+15%)"
                 android:textColor="@color/upgrade_green"
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="3"
+                android:layout_row="4"
                 android:layout_column="2"/>
+
+            <!-- CPU -->
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" CPU Cores: "
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="5"
+                android:layout_column="0"/>
+
+            <TextView
+                android:id="@+id/cpu_cores_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2000"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="5"
+                android:layout_column="1"/>
+
+            <TextView
+                android:id="@+id/cpu_cores_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(+15%)"
+                android:textColor="@color/upgrade_green"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="5"
+                android:layout_column="2"/>
+
+            <!-- Price -->
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Camera: "
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="6"
+                android:layout_column="0"/>
+
+            <TextView
+                android:id="@+id/camera_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2000"
+                android:textSize="@dimen/rec_text_size"
+                android:layout_row="6"
+                android:layout_column="1"/>
 
             <!-- Price -->
             <!-- Title -->
@@ -181,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:text=" Price: "
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="4"
+                android:layout_row="7"
                 android:layout_column="0"/>
 
             <TextView
@@ -190,7 +268,7 @@
                 android:layout_height="wrap_content"
                 android:text="2000"
                 android:textSize="@dimen/rec_text_size"
-                android:layout_row="4"
+                android:layout_row="7"
                 android:layout_column="1"/>
 
 

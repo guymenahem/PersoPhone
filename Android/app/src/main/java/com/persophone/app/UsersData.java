@@ -67,7 +67,7 @@ public class UsersData {
 
         try {
             data.put("user",CurrentUserId);
-            data.put("phone_name",CurrentUserDevDetails.getDeviceName());
+            data.put("phone_name",CurrentUserDevDetails.GetDeviceName());
             data.put("camera",1);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -88,7 +88,7 @@ public class UsersData {
 
         try {
             data.put("user_name","MMM");
-            data.put("phone_name",CurrentUserDevDetails.getDeviceName());
+            data.put("phone_name",CurrentUserDevDetails.GetDeviceName());
             data.put("email","somemail@gmail.com");
         } catch (JSONException e) {
             e.printStackTrace();

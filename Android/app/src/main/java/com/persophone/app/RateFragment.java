@@ -92,7 +92,7 @@ public class RateFragment extends Fragment {
 
         try {
             requestData.put("user",UsersData.CurrentUserId);
-            requestData.put("phone_name",UsersData.CurrentUserDevDetails.getDeviceName());
+            requestData.put("phone_name",UsersData.CurrentUserDevDetails.GetDeviceName());
             requestData.put("battery",batteryRating == 0.0 ? JSONObject.NULL : batteryRating);
             requestData.put("screen",screenRating == 0.0 ? JSONObject.NULL : screenRating);
             requestData.put("camera",cameraRating == 0.0 ? JSONObject.NULL : cameraRating);

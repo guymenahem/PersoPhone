@@ -101,7 +101,7 @@ public class PhoneUsageData {
 
         try{
             obj.put(DBUpdater.USER_PARAM,DBUpdater.USER_ID);
-            obj.put(DBUpdater.PHONE_NAME_PARAM, UsersData.CurrentUserDevDetails.getDeviceName());
+            obj.put(DBUpdater.PHONE_NAME_PARAM, UsersData.CurrentUserDevDetails.GetDeviceName());
             obj.put(DBUpdater.BATTERY_PARAM,Integer.toString(this.battery));
             obj.put(DBUpdater.IDLE_PARAM,Integer.toString(this.idleTime));
             obj.put(DBUpdater.FREE_STOR_PARAM,Integer.toString((int)this.freeStorage));

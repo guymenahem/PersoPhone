@@ -104,6 +104,10 @@ public class PhoneRecFragment extends Fragment{
             ((TextView)v.findViewById(R.id.screen_value)).setText(args.getString("screen_size"));
             ((TextView)v.findViewById(R.id.screen_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("screen_size_improvement")));
 
+            ((TextView)v.findViewById(R.id.screen_res_value)).setText(args.getString("screen_resolution"));
+            ((TextView)v.findViewById(R.id.screen_res_upgrade)).setText(" (old: " + UsersData.CurrentUserDevDetails.GetScreenResolution()+")" );
+            //((TextView)v.findViewById(R.id.screen_res_upgrade)).setTextSize();
+
             ((TextView)v.findViewById(R.id.memory_value)).setText(args.getString("ram")+"GB");
             ((TextView)v.findViewById(R.id.memory_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("ram_improvement")));;
 
@@ -113,6 +117,10 @@ public class PhoneRecFragment extends Fragment{
             ((TextView)v.findViewById(R.id.battery_value)).setText(args.getString("battery"));
             ((TextView)v.findViewById(R.id.battery_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("battery_improvement")));
 
+            ((TextView)v.findViewById(R.id.cpu_cores_value)).setText(args.getString("cpu_cores"));
+            ((TextView)v.findViewById(R.id.cpu_cores_upgrade)).setText(String.format("(+%s%%)",jsnImprovement.getString("cpu_cores_improvement")));
+
+            ((TextView)v.findViewById(R.id.camera_value)).setText(args.getString("camera"));
             ((TextView)v.findViewById(R.id.price_value)).setText(args.getString("price"));
         }
         catch (Exception ex){

@@ -31,9 +31,9 @@ public class CameraCollector {
 
         if(dir.exists() && dir.isDirectory() && dir.canRead()){
             try{numOfPhotos = dir.listFiles().length;}
-            catch(Exception e){}
+            catch(Exception e){Logger.writeToErrorLog("Error to read number of photos");}
         }else{
-            Log.e("TTEESSTT","File NOT exist or not directory or not readable");
+            Logger.writeToErrorLog("File NOT exist or not directory or not readable");
         }
 
         this.newPics = numOfPhotos - this.lastSampPics;

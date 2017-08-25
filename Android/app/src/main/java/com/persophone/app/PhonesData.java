@@ -28,8 +28,9 @@ public class PhonesData {
 
     public void GetAllPhonesData(final Response.Listener<JSONArray> callback){
 
+        String params = "";
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
-                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/phonesList", null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/phonesList" + params, null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -47,8 +48,10 @@ public class PhonesData {
 
     public void GetRecomendedPhones(final Response.Listener<JSONArray> callback){
 
+        String parameters = new String("user=" + UsersData.CurrentUserId + "&phone_name=" + UsersData.CurrentUserDevDetails.GetDeviceName());
+
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
-                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/recommendedPhones", null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/recommendedPhones?" + parameters, null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {

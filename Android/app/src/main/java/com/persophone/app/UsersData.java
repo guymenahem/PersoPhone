@@ -138,7 +138,7 @@ public class UsersData {
         // Create URL
         int userid = UsersData.CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/batteryGrade");
-        String parameters = new String("user=" + userid + "&phone_name=" + "Unknown");
+        String parameters = new String("user=" + userid + "&phone_name=" + UsersData.CurrentUserDevDetails.GetDeviceName());
 
         URL reqUrl = new URL(baseURL + "?" + parameters);
 

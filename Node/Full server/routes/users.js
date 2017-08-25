@@ -411,7 +411,15 @@ router.getStorageGrade = function (user_id, phone_name) {
 }
 
 router.getAllGrades = function (user_id, phone_name) {
-    
+    return new Promise(function (fulfill, reject) {
+        var p1 = router.getStorageGrade(user_id, phone_name);
+        var p2 = router.getBatteryGrade(user_id, phone_name);
+        var p3 = router.getCameraGrade(user_id, phone_name);
+        var p4 = router.getCpuGrade(user_id, phone_name);
+        Promise.all([p1, p2, p3, p4]).then(values => {
+            fulfill(values);
+        })
+    });    
 }
 
 router.get('/batteryUsageGrade', function (req, res) {
@@ -447,6 +455,15 @@ router.get('/storageUsageGrade', function (req, res) {
     var phone_name = req.query.phone_name;
 
     router.getStorageGrade(user_id, phone_name).then(function (result) {
+        res.send(result);
+    });
+});
+
+router.get('/getAllGrades', function (req, res) {
+    var user_id = req.query.user;
+    var phone_name = req.query.phone_name;
+
+    router.getAllGrades(user_id, phone_name).then(function (result) {
         res.send(result);
     });
 });

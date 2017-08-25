@@ -1,16 +1,16 @@
 ﻿'use strict';
 var express = require('express');
 var router = express.Router();
+var users = require('./users');
 
-
-router.get('/all',
-    function(req, res) {
+function getAllPhones() {
+    return new Promise(function (fulfill, reject) {
         var pg = require('pg');
         var conString =
             'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres'; // make sure to match your own database's credentials
 
         pg.connect(conString,
-            function(err, client, done) {
+            function (err, client, done) {
                 if (err) {
                     res.send('err');
                     return console.error('error fetching client from pool', err);
@@ -18,41 +18,57 @@ router.get('/all',
 
                 client.query('SELECT * FROM phones',
                     [],
-                    function(err, result) {
+                    function (err, result) {
                         done();
 
                         if (err) {
                             res.send('err2');
-                            return console.error('error happened during query', err);
+                            reject('error happened during query', err);
                         }
                         console.log('phonesList succeeded');
-                        res.send(result.rows);
+                        fulfill(result.rows);
                     });
             });
     });
+}
+
+router.get('/all',
+    function (req, res) {
+        getAllPhones().then(function (result) {
+            res.send(result);
+    });
+});
 	
 router.get('/recommendedPhones', 
 	function(req,res){
 		const pg = require('pg')  
-		const conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres' // make sure to match your own database's credentials
+        const conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres' // make sure to match your own database's credentials
+        
+		var user_id = req.query.user;
+		var phone_name = req.query.phone_name;
+        var user_screen_size = req.query.screen_size;
 
-		pg.connect(conString, function (err, client, done) {  
-		if (err) {			
-			res.send('err');
-			return console.error('error fetching client from pool', err);
-		  }
-		  
-		  client.query('SELECT * FROM phones order by random() limit 3', [], function (err, result) {
-			done()
+        users.getAllGrades(user_id, phone_name).then(function (result) {
+            var batterGrade = result[0];
 
-			if (err) {
-			  res.send('err2');
-			  return console.error('error happened during query', err)
-			}
-			console.log('recommendedPhones succeeded');
-			res.send(result.rows);
-		  })
-	})
+            pg.connect(conString, function (err, client, done) {
+                if (err) {
+                    res.send('err');
+                    return console.error('error fetching client from pool', err);
+                }
+
+                client.query('SELECT * FROM phones order by random() limit 3', [], function (err, result) {
+                    done()
+
+                    if (err) {
+                        res.send('err2');
+                        return console.error('error happened during query', err)
+                    }
+                    console.log('recommendedPhones succeeded');
+                    res.send(result.rows);
+                })
+            })
+        });		
 })
 
 router.get('/phones_names',

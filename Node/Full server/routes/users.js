@@ -211,10 +211,9 @@ router.getUserPreferences = function (user_id) {
     return new Promise(function (fulfill, reject) {
         var pg = require('pg');
         var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
-        console.log("before getUserPreferences");
+
         pg.connect(conString,
             function (err, client, done) {
-				console.log("before query getUserPreferences");
                 if (err) {
 					console.error('error happened during getUserPreferences query', err);
                     reject(err);
@@ -246,7 +245,7 @@ router.getUserPreferences = function (user_id) {
 }
 router.get('/userPreferences', function (req, res) {
     var user_id = req.query.user;
-	console.log('from get request userPreferences');
+	
     router.getUserPreferences(user_id).then(function (result) {
         res.send(result);
     },function(err){

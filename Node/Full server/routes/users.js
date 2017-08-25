@@ -230,48 +230,225 @@ router.get('/userPreferences', function (req, res) {
 		);
 });
 
-router.get('/batteryGrade', function (req, res) {
-		var pg = require('pg');
+router.getBatteryGrade = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
         var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
 
-        var user_id = req.query.user;
-		var phone_name = req.query.phone_name;	
-		console.log(user_id);
         pg.connect(conString,
-            function(err, client, done) {
-                if (err) {					
-					return console.log("ERR MISHK");
+            function (err, client, done) {
+                if (err) {
+                    return console.log("ERR MISHK");
                     //return console.error('error fetching client from pool', err);
                 }
                 client.query('SELECT * FROM battery_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
                     [user_id, phone_name],
-                    function(err, result) {
-                        done();
-																	
+                    function (err, result) {
+
+
                         if (err) {
+                            reject(err);
                             return console.error('error happened during query', err);
                         }
-						
-						var rows = result.rows;
-						
-						if (rows.length > 0){
-							var deltas = [];
-							
-							for (var i=0; i<rows.length-1; i++){
-								if (rows[i+1].value < rows[i].value){
-									deltas.push(value);
-								}
-							}
-						}
-						
-						var grade = 0;
-						
+
+                        var rows = result.rows;
+
+                        if (rows.length > 0) {
+                            var deltas = [];
+
+                            for (var i = 0; i < rows.length - 1; i++) {
+                                if (rows[i + 1].value < rows[i].value) {
+                                    deltas.push(value);
+                                }
+                            }
+                        }
+
+                        var grade = 0;
+
                         console.log("GET userPreferences succeed");
-						res.send({"batteryGrade":grade});
+                        var result = { "batteryGrade": grade };
+                        fulfill(result);
                     }
-				);
+                );
             }
-		);
+        );
+    });    
+}
+
+router.getCpuGrade = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function (err, client, done) {
+                if (err) {
+                    return console.log("ERR MISHK");
+                    //return console.error('error fetching client from pool', err);
+                }
+                client.query('SELECT * FROM cpu_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                    [user_id, phone_name],
+                    function (err, result) {
+
+
+                        if (err) {
+                            reject(err);
+                            return console.error('error happened during query', err);
+                        }
+
+                        var rows = result.rows;
+
+                        if (rows.length > 0) {
+                            var deltas = [];
+
+                            for (var i = 0; i < rows.length - 1; i++) {
+                                if (rows[i + 1].value < rows[i].value) {
+                                    deltas.push(value);
+                                }
+                            }
+                        }
+
+                        var grade = 0;
+
+                        console.log("GET cpu gragd succeed");
+                        var result = { "cpuGrade": grade };
+                        fulfill(result);
+                    }
+                );
+            }
+        );
+    });
+}
+
+router.getCameraGrade = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function (err, client, done) {
+                if (err) {
+                    return console.log("ERR MISHK");
+                    //return console.error('error fetching client from pool', err);
+                }
+                client.query('SELECT * FROM camera_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                    [user_id, phone_name],
+                    function (err, result) {
+
+
+                        if (err) {
+                            reject(err);
+                            return console.error('error happened during query', err);
+                        }
+
+                        var rows = result.rows;
+
+                        if (rows.length > 0) {
+                            var deltas = [];
+
+                            for (var i = 0; i < rows.length - 1; i++) {
+                                if (rows[i + 1].value < rows[i].value) {
+                                    deltas.push(value);
+                                }
+                            }
+                        }
+
+                        var grade = 0;
+
+                        console.log("GET camera grade succeed");
+                        var result = { "cameraGrade": grade };
+                        fulfill(result);
+                    }
+                );
+            }
+        );
+    });
+}
+
+router.getStorageGrade = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function (err, client, done) {
+                if (err) {
+                    return console.log("ERR MISHK");
+                    //return console.error('error fetching client from pool', err);
+                }
+                client.query('SELECT * FROM storage_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                    [user_id, phone_name],
+                    function (err, result) {
+
+
+                        if (err) {
+                            reject(err);
+                            return console.error('error happened during query', err);
+                        }
+
+                        var rows = result.rows;
+
+                        if (rows.length > 0) {
+                            var deltas = [];
+
+                            for (var i = 0; i < rows.length - 1; i++) {
+                                if (rows[i + 1].value < rows[i].value) {
+                                    deltas.push(value);
+                                }
+                            }
+                        }
+
+                        var grade = 0;
+
+                        console.log("GET storage grade succeed");
+                        var result = { "storageGrade": grade };
+                        fulfill(result);
+                    }
+                );
+            }
+        );
+    });
+}
+
+router.getAllGrades = function (user_id, phone_name) {
+    
+}
+
+router.get('/batteryUsageGrade', function (req, res) {
+
+    var user_id = req.query.user;
+    var phone_name = req.query.phone_name;
+
+    router.getBatteryGrade(user_id, phone_name).then(function (result) {
+        res.send(result);
+    });
+});
+
+router.get('/cpuUsageGrade', function (req, res) {
+    var user_id = req.query.user;
+    var phone_name = req.query.phone_name;
+
+    router.getCpuGrade(user_id, phone_name).then(function (result) {
+        res.send(result);
+    });
+});
+
+router.get('/cameraUsageGrade', function (req, res) {
+    var user_id = req.query.user;
+    var phone_name = req.query.phone_name;
+
+    router.getBatteryGrade(user_id, phone_name).then(function (result) {
+        res.send(result);
+    });
+});
+
+router.get('/storageUsageGrade', function (req, res) {
+    var user_id = req.query.user;
+    var phone_name = req.query.phone_name;
+
+    router.getStorageGrade(user_id, phone_name).then(function (result) {
+        res.send(result);
+    });
 });
 
 /* GET ALL Users ID */

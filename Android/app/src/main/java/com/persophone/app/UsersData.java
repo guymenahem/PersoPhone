@@ -117,7 +117,7 @@ public class UsersData {
         // Create URL
         int userid = CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userRates");
-        String parameters = new String("user=" + userid);
+        String parameters = new String("user=" + userid +"&phone=" + CurrentUserDevDetails.GetDeviceName());
 
         URL reqUrl = new URL(baseURL + "?" + parameters);
 
@@ -137,7 +137,7 @@ public class UsersData {
     public void GetUserBatteryGrade(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
         // Create URL
         int userid = UsersData.CurrentUserId;
-        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/batteryGrade");
+        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/batteryUsageGrade");
         String parameters = new String("user=" + userid + "&phone_name=" + UsersData.CurrentUserDevDetails.GetDeviceName());
 
         URL reqUrl = new URL(baseURL + "?" + parameters);

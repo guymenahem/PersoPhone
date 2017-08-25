@@ -26,23 +26,41 @@ router.post('/',
                 if (err) {
                     return console.error('error fetching client from pool', err);
                 }				
+				
+				function endHandler () {
+				   count--; // decrement count by 1
+				   if (count === 0) {
+					   console.log("done all "+ originalCount +" insert queries")
+					   // two queries have ended, lets close the connection.
+                       res.send("OK");
+                       done();
+				   }
+				}
+				
+				function endFunc(err, result) {					
+					if (err) {
+						return console.error('error happened during query', err);
+					}
+					
+					endHandler();
+				}
 				var params = [user_id, phone_name, battery, idle_time, stor_used,free_stor, appsuse, camera];
 				console.log("all parameters: " + params.toString());
 				
 				var query1 = client.query('INSERT INTO phoneusage (user_id, battery_usage, idle_time,stor_used, apps_usage, time_stamp) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP);',
-				[user_id, battery, idle_time, stor_used, appsuse]);
+				[user_id, battery, idle_time, stor_used, appsuse],endFunc);
 				
 				var query2 = client.query('INSERT INTO battery_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
-				[user_id,phone_name, battery]);
+				[user_id,phone_name, battery],endFunc);
 				
 				var query3 = client.query('INSERT INTO cpu_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3,  CURRENT_TIMESTAMP);',
-				[user_id,phone_name,idle_time]);
+				[user_id,phone_name,idle_time],endFunc);
 				
 				var query4 = client.query('INSERT INTO storage_usage(user_id, phone_name, total_storage, free_storage, insertion_time) VALUES ($1, $2, $3,$4, CURRENT_TIMESTAMP);',
-				[user_id,phone_name,stor_used,free_stor]);
+				[user_id,phone_name,stor_used,free_stor],endFunc);
 				
 				var query5 = client.query('INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
-				[user_id,phone_name, appsuse]);
+				[user_id,phone_name, appsuse],endFunc);
 				
 				var count = 5;
 				var originalCount = 5;
@@ -52,14 +70,7 @@ router.post('/',
 				query4.on('end', endHandler);
 				query5.on('end', endHandler);
 
-				function endHandler () {
-				   count--; // decrement count by 1
-				   if (count === 0) {
-					   console.log("done all "+ originalCount +" insert queries")
-					   // two queries have ended, lets close the connection.
-					   res.send("OK");
-				   }
-				}
+				
             });
     });
 	
@@ -89,7 +100,8 @@ router.post('/',
 				function endHandler () {
 				   console.log("done logging camera use")
 				   // two queries have ended, lets close the connection.
-				   res.send("OK");
+                   res.send("OK");
+                   done();
 				   
 				}
             });

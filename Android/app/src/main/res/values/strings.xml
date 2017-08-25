@@ -15,7 +15,7 @@
     <!-- String for preferences slider -->
     <string-array name="brands_array">
         <item></item>
-        <item>Iphone</item>
+        <item>Apple</item>
         <item>Samsung</item>
         <item>LG</item>
         <item>Other</item>

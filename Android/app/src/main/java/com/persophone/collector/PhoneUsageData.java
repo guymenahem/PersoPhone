@@ -100,7 +100,7 @@ public class PhoneUsageData {
         JSONObject obj = new JSONObject();
 
         try{
-            obj.put(DBUpdater.USER_PARAM,DBUpdater.USER_ID);
+            obj.put(DBUpdater.USER_PARAM,UsersData.CurrentUserId);
             obj.put(DBUpdater.PHONE_NAME_PARAM, UsersData.CurrentUserDevDetails.GetDeviceName());
             obj.put(DBUpdater.BATTERY_PARAM,Integer.toString(this.battery));
             obj.put(DBUpdater.IDLE_PARAM,Integer.toString(this.idleTime));
@@ -116,7 +116,7 @@ public class PhoneUsageData {
     public void updateMapOfValues(Map<String,String> map){
         map.clear();
 
-        map.put(DBUpdater.USER_PARAM,"555");
+        map.put(DBUpdater.USER_PARAM,Integer.toString(UsersData.CurrentUserId));
         map.put(DBUpdater.BATTERY_PARAM,Integer.toString(this.battery));
         map.put(DBUpdater.IDLE_PARAM,Integer.toString(this.idleTime));
         map.put(DBUpdater.STOR_PARAM,Integer.toString((int)this.totalStorage));

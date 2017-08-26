@@ -57,10 +57,10 @@ router.get('/recommendedPhones',
             var prefernces = values[2][0];
 
 			var brands = [
-				{ name: 'apple', point: 1.0, factor: 1.12, screenFactor: 1.07, os:'ios' },
-				{ name: 'samsung', point: 0.81, factor: 1.12, screenFactor: 1.07, os: 'android' },
+				{ name: 'apple', point: 1.0, factor: 1.07, screenFactor: 1.07, os:'ios' },
+				{ name: 'samsung', point: 0.81, factor: 1.06, screenFactor: 1.07, os: 'android' },
 				{ name: 'lg', point: 0.66, factor: 1.0, screenFactor: 1.07, os: 'android' },
-				{ name: 'xiaomi', point: 0.5, factor: 0.86, screenFactor: 1.02, os: 'android' },
+				{ name: 'xiaomi', point: 0.5, factor: 0.93, screenFactor: 1.02, os: 'android' },
 				{ name: 'motorola', point: 0.36, factor: 0.76, screenFactor: 0.94, os: 'android' },
 				{ name: 'other', point: 0.18, factor: 0.72, screenFactor: 0.87, os: 'other' }
 			];
@@ -217,7 +217,7 @@ router.get('/recommendedPhones',
 					return BetweenOneAndZero((values[ramValue.toString()] || 1.1) * brand.factor);
 				}
 
-				var ram = getRam(phone.cpu_cores);
+				var ram = getRam(phone.ram);
 				phoneVector.push(ram);
 
 				// *************** price ***************************
@@ -259,9 +259,9 @@ router.get('/recommendedPhones',
 
 					// creating binnary dummy variables for OS
 					// is ios
-					userVector.push(os.point == 1 ? 1 :0);
+					userVector.push(os == 1 ? 1 :0);
 					// is android
-					userVector.push(os.point == 0 ? 1 :0);
+					userVector.push(os == 0 ? 1 :0);
 						
 				} else if (prefernces['brand']) {
 					var os1 = brands.filter(function (brand) {
@@ -273,9 +273,9 @@ router.get('/recommendedPhones',
 					})[0].point;
 
 					// is ios
-					userVector.push(os.point == 1 ? 1 :0);
+					userVector.push(os == 1 ? 1 :0);
 					// is android
-					userVector.push(os.point == 0 ? 1 :0);
+					userVector.push(os == 0 ? 1 :0);
 				} else {
 					// none ios, android it's ohter
 					userVector.push(0);
@@ -309,8 +309,7 @@ router.get('/recommendedPhones',
 				userVector.push(grades['storageGrade']);
 
 				// *************** ram *********************************
-				userVector.push(grades['cpuGrade']);
-				// TODO:: userVector.push(grades['ramGrade']);
+				userVector.push(grades['ramGrade']);
 
 				// *************** screen *********************************
 				var prices = {
@@ -320,7 +319,7 @@ router.get('/recommendedPhones',
 				}
 
 				if (prefernces['price']) {
-					userVector.push(screens[prefernces['price']]);
+                    userVector.push(prices[prefernces['price']]);
 				}
 				else {
 					userVector.push(0.5);
@@ -348,7 +347,8 @@ router.get('/recommendedPhones',
 				}
 
 				for (var i = 0; i < phonesVectors.length; i++) {
-					phones[i].cosineSimilarity = cosineSimilarity(userVector, phonesVectors[i])
+                    phones[i].cosineSimilarity = cosineSimilarity(userVector, phonesVectors[i]);
+                    if (phones[i].cosineSimilarity == null || phones[i].cosineSimilarity == undefined) throw "cosineSimilarity is null";
 				}
 			}
 

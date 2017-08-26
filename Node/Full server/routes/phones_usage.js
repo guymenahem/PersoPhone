@@ -4,17 +4,18 @@ var router = express.Router();
 
 
 router.post('/',
-    function(req, res) {
+    function (req, res) {
         //var jsonReq = JSON.parse(req);
 
         var user_id = req.body.user;
-		var phone_name = req.body.phone_name;
+        var phone_name = req.body.phone_name;
         var battery = req.body.battery;
         var idle_time = req.body.idle;
+        var ram = req.body.ram;
         var appsuse = req.body.appsuse;
         var stor_used = req.body.stor_used;
-		var free_stor = req.body.free_stor;
-		var camera = req.body.camera;
+        var free_stor = req.body.free_stor;
+        var camera = req.body.camera;
         var stat = 'OK';
 
         var pg = require('pg');
@@ -22,53 +23,59 @@ router.post('/',
             'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres'; // make sure to match your own database's credentials
 
         pg.connect(conString,
-            function(err, client, done) {
+            function (err, client, done) {
                 if (err) {
                     return console.error('error fetching client from pool', err);
-                }				
+                }
+
+                function endHandler() {
+                    count--; // decrement count by 1
+                    if (count === 0) {
+                        console.log("done all " + originalCount + " insert queries")
+                        // two queries have ended, lets close the connection.
+                        res.send("OK");
+                        done();
+                    }
+                }
+
+                function endFunc(err, result) {
+                    if (err) {
+                        return console.error('error happened during query', err);
+                    }
+
+                    endHandler();
+                }
+                var params = [user_id, phone_name, battery, idle_time, stor_used, free_stor, appsuse, camera];
+                console.log("all parameters: " + params.toString());
+
+                var queries = [];
+
+                queries.push(client.query('INSERT INTO phoneusage (user_id, battery_usage, idle_time,stor_used, apps_usage, time_stamp) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP);',
+                    [user_id, battery, idle_time, stor_used, appsuse], endFunc));
+
+                queries.push(client.query('INSERT INTO battery_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
+                    [user_id, phone_name, battery], endFunc));
+
+                queries.push(client.query('INSERT INTO cpu_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3,  CURRENT_TIMESTAMP);',
+                    [user_id, phone_name, idle_time], endFunc));
+
+                queries.push(client.query('INSERT INTO ram_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3,  CURRENT_TIMESTAMP);',
+                    [user_id, phone_name, ram], endFunc));
 				
-				function endHandler () {
-				   count--; // decrement count by 1
-				   if (count === 0) {
-					   console.log("done all "+ originalCount +" insert queries")
-					   // two queries have ended, lets close the connection.
-                       res.send("OK");
-                       done();
-				   }
-				}
+                queries.push(client.query('INSERT INTO storage_usage(user_id, phone_name, total_storage, free_storage, insertion_time) VALUES ($1, $2, $3,$4, CURRENT_TIMESTAMP);',
+                    [user_id, phone_name, stor_used, free_stor], endFunc));
 				
-				function endFunc(err, result) {					
-					if (err) {
-						return console.error('error happened during query', err);
-					}
-					
-					endHandler();
-				}
-				var params = [user_id, phone_name, battery, idle_time, stor_used,free_stor, appsuse, camera];
-				console.log("all parameters: " + params.toString());
-				
-				var query1 = client.query('INSERT INTO phoneusage (user_id, battery_usage, idle_time,stor_used, apps_usage, time_stamp) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP);',
-				[user_id, battery, idle_time, stor_used, appsuse],endFunc);
-				
-				var query2 = client.query('INSERT INTO battery_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
-				[user_id,phone_name, battery],endFunc);
-				
-				var query3 = client.query('INSERT INTO cpu_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3,  CURRENT_TIMESTAMP);',
-				[user_id,phone_name,idle_time],endFunc);
-				
-				var query4 = client.query('INSERT INTO storage_usage(user_id, phone_name, total_storage, free_storage, insertion_time) VALUES ($1, $2, $3,$4, CURRENT_TIMESTAMP);',
-				[user_id,phone_name,stor_used,free_stor],endFunc);
-				
-				var query5 = client.query('INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
-				[user_id,phone_name, appsuse],endFunc);
-				
-				var count = 5;
-				var originalCount = 5;
-				query1.on('end', endHandler);
+                queries.push(client.query('INSERT INTO applications_usage(user_id, phone_name, value, insertion_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP);',
+                    [user_id, phone_name, appsuse], endFunc));
+
+                var count = queries.length;
+                var originalCount = queries.length;
+
+				/*query1.on('end', endHandler);
 				query2.on('end', endHandler);
 				query3.on('end', endHandler);
 				query4.on('end', endHandler);
-				query5.on('end', endHandler);
+				query5.on('end', endHandler);*/
 
 				
             });

@@ -11,7 +11,7 @@ router.post('/',
         var phone_name = req.body.phone_name;
         var battery = req.body.battery;
         var idle_time = req.body.idle;
-        var ram = req.body.ram;
+        var ram = req.body.ram_free_prc;
         var appsuse = req.body.appsuse;
         var stor_used = req.body.stor_used;
         var free_stor = req.body.free_stor;

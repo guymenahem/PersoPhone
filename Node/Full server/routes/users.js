@@ -326,19 +326,66 @@ router.getCpuGrade = function (user_id, phone_name) {
                         var rows = result.rows;
 
                         if (rows.length > 0) {
-                            var deltas = [];
+                            /*var deltas = [];
 
                             for (var i = 0; i < rows.length - 1; i++) {
                                 if (rows[i + 1].value < rows[i].value) {
                                     deltas.push(value);
                                 }
-                            }
+                            }*/
                         }
 
                         var grade = 0;
 
                         console.log("GET cpu grade succeed");
                         var result = { "cpuGrade": grade };
+                        fulfill(result);
+                    }
+                );
+                stream.on('end', done);
+            }
+        );
+    });
+}
+
+router.getRamGrade = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function (err, client, done) {
+                if (err) {
+                    console.log("error happened during ram grade query");
+                    reject(err);
+                    return;
+                }
+                var stream = client.query('SELECT * FROM ram_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                    [user_id, phone_name],
+                    function (err, result) {
+
+                        if (err) {
+                            console.error('error happened during ram grade query', err);
+                            reject(err);
+                            return;
+                        }
+
+                        var rows = result.rows;
+
+                        if (rows.length > 0) {
+                            /*var deltas = [];
+
+                            for (var i = 0; i < rows.length - 1; i++) {
+                                if (rows[i + 1].value < rows[i].value) {
+                                    deltas.push(value);
+                                }
+                            }*/
+                        }
+
+                        var grade = 0;
+
+                        console.log("GET ram grade succeed");
+                        var result = { "ramGrade": grade };
                         fulfill(result);
                     }
                 );
@@ -448,7 +495,8 @@ router.getAllGrades = function (user_id, phone_name) {
         var p2 = router.getBatteryGrade(user_id, phone_name);
         var p3 = router.getCameraGrade(user_id, phone_name);
         var p4 = router.getCpuGrade(user_id, phone_name);
-        Promise.all([p1, p2, p3, p4]).then(values => {
+        var p5 = router.getRamGrade(user_id, phone_name);
+        Promise.all([p1, p2, p3, p4, p5]).then(values => {
             (function formatGrades(grades) {
                 var formattedGrades = {};
                 for (var i = 0; i < grades.length; i++) {
@@ -479,6 +527,15 @@ router.get('/cpuUsageGrade', function (req, res) {
     var phone_name = req.query.phone_name;
 
     router.getCpuGrade(user_id, phone_name).then(function (result) {
+        res.send(result);
+    });
+});
+
+router.get('/ramUsageGrade', function (req, res) {
+    var user_id = req.query.user;
+    var phone_name = req.query.phone_name;
+
+    router.getRamGrade(user_id, phone_name).then(function (result) {
         res.send(result);
     });
 });

@@ -1,6 +1,7 @@
 package com.persophone.app;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,17 @@ public class UsageFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    public static final double CRITICAL_BATTERY_PARAM = 0.7;
+    public static final double MEDIUM_BATTERY_PARAM = 0.3;
+    public static final double CRITICAL_CPU_PARAM = 0.7;
+    public static final double MEDIUM_CPU_PARAM = 0.3;
+    public static final double CRITICAL_MEMORY_PARAM = 0.7;
+    public static final double MEDIUM_MEMORY_PARAM = 0.3;
+    public static final double CRITICAL_STORAGE_PARAM = 0.7;
+    public static final double MEDIUM_STORAGE_PARAM = 0.3;
+    public static final double CRITICAL_CAMERA_PARAM = 0.7;
+    public static final double MEDIUM_CAMERA_PARAM = 0.3;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,27 +91,141 @@ public class UsageFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_usage, container, false);
         this.fillGraphExample(view);
         try {
-            new UsersData().GetUserBatteryGrade(new Response.Listener<JSONObject>() {
+            new UsersData().GetAllGrades(new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        double dGrade = response.getDouble("batteryGrade");
+                        double dBattery = response.getDouble("batteryGrade");
+                        double dCpu = response.getDouble("cpuGrade");
+                        double dMemory = response.getDouble("ramGrade");
+                        double dStorage = response.getDouble("storageGrade");
+                        double dCamera = response.getDouble("cameraGrade");
+
+                        String usageText = "Good battery usage";
+                        String badgeText = "Low";
+                        Drawable badge = getContext().getDrawable(R.drawable.ok_badge);
+
                         // logic
-                        if (dGrade >= 0  && dGrade < 0.3){
-                            ((TextView)view.findViewById(R.id.battery_usage)).setText("too critical per day");
-                            ((TextView)view.findViewById(R.id.battery_usage)).setText("critical");
-                            //((TextView)view.findViewById(R.id.battery_notification)).setHighlightColor("critical");
+                        // Battery
+                        if (dBattery >= CRITICAL_BATTERY_PARAM) {
+                            usageText = "Critical battery usage";
+                            badgeText = "High";
+                            badge = getContext().getDrawable(R.drawable.danger_badge);
+                        } else if (dBattery >= MEDIUM_BATTERY_PARAM) {
+                            usageText = "Average battery usage";
+                            badgeText = "Medium";
+                            badge = getContext().getDrawable(R.drawable.medium_badge);
                         }
+                        ((TextView) view.findViewById(R.id.battery_usage)).setText(usageText);
+                        ((TextView) view.findViewById(R.id.battery_notification)).setText(badgeText);
+                        ((TextView) view.findViewById(R.id.battery_notification)).setBackground(badge);
+
+                        // Memory
+                        usageText = "Good memory usage";
+                        badgeText = "Low";
+                        badge = getContext().getDrawable(R.drawable.ok_badge);
+                        if (dMemory >= CRITICAL_MEMORY_PARAM) {
+                            usageText = "Critical memory usage";
+                            badgeText = "High";
+                            badge = getContext().getDrawable(R.drawable.danger_badge);
+                        } else if (dMemory >= MEDIUM_MEMORY_PARAM) {
+                            usageText = "Average memory usage";
+                            badgeText = "Medium";
+                            badge = getContext().getDrawable(R.drawable.medium_badge);
+                        }
+                        ((TextView) view.findViewById(R.id.memory_usage)).setText(usageText);
+                        ((TextView) view.findViewById(R.id.memory_notification)).setText(badgeText);
+                        ((TextView) view.findViewById(R.id.memory_notification)).setBackground(badge);
+
+                        // Storage
+                        usageText = "Low storage usage";
+                        badgeText = "Low";
+                        badge = getContext().getDrawable(R.drawable.ok_badge);
+                        if (dStorage >= CRITICAL_STORAGE_PARAM) {
+                            usageText = "Critical storage";
+                            badgeText = "High";
+                            badge = getContext().getDrawable(R.drawable.danger_badge);
+                        } else if (dStorage >= MEDIUM_STORAGE_PARAM) {
+                            usageText = "Average storage usage";
+                            badgeText = "Medium";
+                            badge = getContext().getDrawable(R.drawable.medium_badge);
+                        }
+                        ((TextView) view.findViewById(R.id.storage_usage)).setText(usageText);
+                        ((TextView) view.findViewById(R.id.storage_notification)).setText(badgeText);
+                        ((TextView) view.findViewById(R.id.storage_notification)).setBackground(badge);
+
+                        // Cpu
+                        usageText = "Low cpu usage";
+                        badgeText = "Low";
+                        badge = getContext().getDrawable(R.drawable.ok_badge);
+                        if (dCpu >= CRITICAL_CPU_PARAM) {
+                            usageText = "Critical cpu";
+                            badgeText = "High";
+                            badge = getContext().getDrawable(R.drawable.danger_badge);
+                        } else if (dCpu >= MEDIUM_CPU_PARAM) {
+                            usageText = "Average cpu usage";
+                            badgeText = "Medium";
+                            badge = getContext().getDrawable(R.drawable.medium_badge);
+                        }
+                        ((TextView) view.findViewById(R.id.cpu_usage)).setText(usageText);
+                        ((TextView) view.findViewById(R.id.cpu_notification)).setText(badgeText);
+                        ((TextView) view.findViewById(R.id.cpu_notification)).setBackground(badge);
+
+                        // Camera
+                        usageText = "Low camera usage";
+                        badgeText = "Low";
+                        badge = getContext().getDrawable(R.drawable.ok_badge);
+                        if (dCamera >= CRITICAL_CAMERA_PARAM) {
+                            usageText = "High camera usage";
+                            badgeText = "High";
+                            badge = getContext().getDrawable(R.drawable.danger_badge);
+                        } else if (dCamera >= MEDIUM_CAMERA_PARAM) {
+                            usageText = "Average camera usage";
+                            badgeText = "Medium";
+                            badge = getContext().getDrawable(R.drawable.medium_badge);
+                        }
+                        ((TextView) view.findViewById(R.id.camera_usage)).setText(usageText);
+                        ((TextView) view.findViewById(R.id.camera_notification)).setText(badgeText);
+                        ((TextView) view.findViewById(R.id.camera_notification)).setBackground(badge);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+/*            new UsersData().GetUserBatteryGrade(new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        double dGrade = response.getDouble("batteryGrade");
+                        String usageText = "Good battery usage";
+                        String badgeText = "Good";
+                        Drawable badge = getContext().getDrawable(R.drawable.ok_badge);
+
+                        // logic
+                        if (dGrade >= 0  && dGrade < 0.3){
+                            usageText = "Replace your battery";
+                            badgeText = "Critical";
+                            badge = getContext().getDrawable(R.drawable.danger_badge);
+                        }
+                        else if(dGrade < 0.7)
+                        {
+                            usageText = "Average battery usage";
+                            badgeText = "Medium";
+                            badge = getContext().getDrawable(R.drawable.medium_badge);
+                        }
+                        ((TextView)view.findViewById(R.id.battery_usage)).setText(usageText);
+                        ((TextView)view.findViewById(R.id.battery_notification)).setText(badgeText);
+                        ((TextView)view.findViewById(R.id.battery_notification)).setBackground(badge);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });*/
             });
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         return view;
     }
 

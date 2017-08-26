@@ -155,7 +155,7 @@ public class UsersData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
-    public void GetAllGrades(final  Response.Listener<JSONArray> callback) throws MalformedURLException {
+    public void GetAllGrades(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
         // Create URL
         int userid = UsersData.CurrentUserId;
         String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/getAllGrades");
@@ -163,7 +163,7 @@ public class UsersData {
 
         URL reqUrl = new URL(baseURL + "?" + parameters);
 
-        JsonArrayRequest jsObjRequest = new JsonArrayRequest
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override

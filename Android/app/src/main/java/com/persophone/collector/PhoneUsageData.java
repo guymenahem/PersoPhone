@@ -28,8 +28,13 @@ public class PhoneUsageData {
     protected long totalStorage;
 
     protected  int camera;
+
     // Apps stats
     protected ArrayList<ApplicationData> applications = new ArrayList<ApplicationData>();
+
+    // RAM stats
+    protected int freePrcRAM;
+
 
     // battery Methods
     public void setBattey(int battery){
@@ -65,6 +70,14 @@ public class PhoneUsageData {
         for(String str : arr){
             this.applications.add(new ApplicationData(str));
         }
+    }
+
+    // RAM methods
+    public void setFreePrcRAM(int free){
+        this.freePrcRAM = free;
+    }
+    public int getFreePrcRAM(){
+        return this.freePrcRAM;
     }
 
 
@@ -108,6 +121,7 @@ public class PhoneUsageData {
             obj.put(DBUpdater.STOR_PARAM,Integer.toString((int)this.totalStorage));
             obj.put(DBUpdater.APP_PARAM,this.getApplicationCompact());
             obj.put(DBUpdater.CAMERA_PARAM, 2);
+            obj.put(DBUpdater.RAM_FREE_PRC, this.getFreePrcRAM());
         }catch (Exception e){}
 
         return obj;
@@ -132,4 +146,5 @@ public class PhoneUsageData {
 
         return s;
     }
+
 }

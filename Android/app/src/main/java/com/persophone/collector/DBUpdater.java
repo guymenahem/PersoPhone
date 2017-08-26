@@ -53,6 +53,7 @@ public class DBUpdater /*extends Thread*/ {
     public static final String FREE_STOR_PARAM = "free_stor";
     public static final String STOR_PARAM = "stor_used";
     public static final String CAMERA_PARAM = "camera";
+    public static final String RAM_FREE_PRC = "ram_free_prc";
 
 
     protected PhoneUsageData phoneUsageData;

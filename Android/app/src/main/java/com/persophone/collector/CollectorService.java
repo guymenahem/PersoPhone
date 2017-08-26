@@ -26,6 +26,7 @@ public class CollectorService extends Service {
     ApplicationCollector applicationCollector = new ApplicationCollector(this.phoneUsageData.getApplicationData());
     StorageCollector storageCollector = new StorageCollector();
     CameraCollector cameraCollector = new CameraCollector();
+    RAMCollector ramCollector = new RAMCollector();
 
     DBUpdater DBUpdater;
 
@@ -62,6 +63,10 @@ public class CollectorService extends Service {
 
     private void collect() {
 
+        // set Collect RAM
+        this.ramCollector.CollectRAMData();
+
+
         // set Battery
         this.batteryCollector.collectBatteryStatues(getBaseContext());
         this.phoneUsageData.setBattey(this.batteryCollector.getBatteryStatues());
@@ -81,6 +86,9 @@ public class CollectorService extends Service {
 
         // set Camera
         this.cameraCollector.CollectCameraStat();
+
+        // Set RAM
+        this.phoneUsageData.setFreePrcRAM(this.ramCollector.getFreePrcRAM());
 
         DBUpdater.getInstance().setPhoneUsage(this.phoneUsageData);
     }

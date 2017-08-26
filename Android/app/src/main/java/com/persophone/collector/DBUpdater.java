@@ -44,8 +44,7 @@ public class DBUpdater /*extends Thread*/ {
     public static final int SEND_DATA = 2;
     public static final String URL_APP_SERVER = "http://ec2-35-157-26-139.eu-central-1.compute.amazonaws.com/";
     public static final String URL_ADD_POST_APP = "phones_usage";
-
-    public static final String USER_ID = "555";
+    
     public static final String APP_PARAM = "appsuse";
     public static final String USER_PARAM = "user";
     public static final String PHONE_NAME_PARAM = "phone_name";

@@ -277,18 +277,45 @@ router.getBatteryGrade = function (user_id, phone_name) {
                         }
 
                         var rows = result.rows;
-
+						var grade = 0.0;
+						var avgRank = 0.0;
+						var diffRank = 0.0;
+						
                         if (rows.length > 0) {
                             var deltas = [];
-
+							var avg = 0.0;
+							var cnt = 0;
+							
+							// Fetch deltas and calculate average usage
                             for (var i = 0; i < rows.length - 1; i++) {
+								if (rows[i] < 100){
+									cnt++;
+									avg+= rows[i];
+								}
                                 if (rows[i + 1].value < rows[i].value) {
                                     deltas.push(value);
                                 }
                             }
+							if (rows[rows.length - 1] < 100){
+								cnt++;
+								avg+= rows[rows.length - 1];
+							}
+							
+							// Get average usage (Half of the grade)
+							avgRank = 0.5 - (avg / cnt / 2 / 100);
+							
+							avg = 0.0;
+							// Calculate deltas
+							for (var i = 0; i < deltas.length; i++)
+							{
+								avg += (100 / deltas[i]);
+							}
+							avg = avg / deltas.length / 2 / 100;
+							
+							diffRank = 0.5 - avg;
                         }
 
-                        var grade = 0;
+                        grade = avgRank + diffRank;
 
                         console.log("GET battery grade succeed");
                         var result = { "batteryGrade": grade };
@@ -313,7 +340,7 @@ router.getCpuGrade = function (user_id, phone_name) {
 					reject(err);
 					return;
                 }
-                var stream = client.query('SELECT * FROM cpu_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                var stream = client.query('SELECT avg(value) avg_value FROM cpu_usage where user_id = $1 and phone_name = $2;',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -324,18 +351,11 @@ router.getCpuGrade = function (user_id, phone_name) {
                         }
 
                         var rows = result.rows;
-
-                        if (rows.length > 0) {
-                            /*var deltas = [];
-
-                            for (var i = 0; i < rows.length - 1; i++) {
-                                if (rows[i + 1].value < rows[i].value) {
-                                    deltas.push(value);
-                                }
-                            }*/
-                        }
-
                         var grade = 0;
+						
+                        if (rows.length > 0) {
+                            grade = avg_value;
+                        }
 
                         console.log("GET cpu grade succeed");
                         var result = { "cpuGrade": grade };
@@ -407,7 +427,7 @@ router.getCameraGrade = function (user_id, phone_name) {
 					reject(err);
 					return;
                 }
-                var stream = client.query('SELECT * FROM camera_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                var stream = client.query('SELECT select date_trunc(''day'',insertion_time) insertion_day,sum(value) sum_value from camera_usage where user_id = $1 and phone_name = $2 group by date_trunc(''day'',insertion_time);',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -416,20 +436,26 @@ router.getCameraGrade = function (user_id, phone_name) {
                             reject(err);
 							return;
                         }
-
+						
                         var rows = result.rows;
-
+						var grade = 0;
+						var maxPicsPerDay = 100;
+						
                         if (rows.length > 0) {
-                            var deltas = [];
-
-                            for (var i = 0; i < rows.length - 1; i++) {
-                                if (rows[i + 1].value < rows[i].value) {
-                                    deltas.push(value);
-                                }
+							var avg = 0.0;
+							
+                            for (var i = 0; i < rows.length; i++) {
+                                avg += rows[i].sum_value;
                             }
+							avg = avg / rows.length;
+							if (avg > maxPicsPerDay){
+								grade = 1;
+							}
+							else
+							{
+								grade = avg / maxPicsPerDay;
+							}
                         }
-
-                        var grade = 0;
 
                         console.log("GET camera grade succeed");
                         var result = { "cameraGrade": grade };
@@ -454,7 +480,7 @@ router.getStorageGrade = function (user_id, phone_name) {
 					reject(err);
 					return;
                 }
-                var stream = client.query('SELECT * FROM storage_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                var stream = client.query('SELECT * FROM storage_usage where user_id = $1 and phone_name = $2 order by insertion_time desc limit 1;',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -465,18 +491,11 @@ router.getStorageGrade = function (user_id, phone_name) {
                         }
 
                         var rows = result.rows;
+						var grade = 0;
 
-                        if (rows.length > 0) {
-                            var deltas = [];
-
-                            for (var i = 0; i < rows.length - 1; i++) {
-                                if (rows[i + 1].value < rows[i].value) {
-                                    deltas.push(value);
-                                }
-                            }
+                        if (rows.length == 1) {
+							grade = rows[0].free_storage / rows[0].total_usage;
                         }
-
-                        var grade = 0;
 
                         console.log("GET storage grade succeed");
                         var result = { "storageGrade": grade };

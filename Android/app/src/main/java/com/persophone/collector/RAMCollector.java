@@ -35,7 +35,7 @@ public class RAMCollector {
                     int totalRAM = Integer.parseInt(s[1]);
                     int usedRAM = Integer.parseInt(s[2]);
                     int freeRAM = Integer.parseInt(s[3]);
-                    float div = (float)freeRAM/(float)usedRAM;
+                    float div = (float)usedRAM/(float)totalRAM;
                     int prc = (int)((float)div*100f);
 
                     RAMCollector.AtomFreePrc.set(prc);

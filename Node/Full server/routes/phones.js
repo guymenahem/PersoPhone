@@ -46,23 +46,46 @@ router.get('/phoneRates', function (req, res) {
     var pg = require('pg');
     var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
 
-    var phone_name = req.query.phone;
-    console.log(user_id);
+    var phone_name = req.query.phone_name;
+    console.log(phone_name);
     pg.connect(conString,
         function (err, client, done) {
             if (err) {
                 console.error('error happened during userRates query', err);
             }
             else {
-                client.query('SELECT * FROM users_rates where phone_name = $1',
+                client.query('SELECT * FROM users_rates where phone_name like $1' ,
                     [phone_name],
                     function (err, result) {
+                        var format = function (format) {
+                            var args = Array.prototype.slice.call(arguments, 1);
+                            return format.replace(/{(\d+)}/g, function (match, number) {
+                                return typeof args[number] != 'undefined'
+                                    ? args[number]
+                                    : match
+                                    ;
+                            });
+                        };    
+
                         if (err) {
                             console.error('error happened during query userRates query', err);
                         }
                         else {
-                            console.log("GET userRates succeed");
-                            res.send(result.rows);
+                            var resValue = { result: "no rates to show" };
+                            if (result.rows.length > 0) {
+                                var totalRatesString = "";
+
+                                for (var i = 0; i < result.rows.length; i++) {
+                                    var cur = result.rows[i];
+                                    totalRatesString +=
+                                        format("{6})Battery: {0} \t Camera: {1} \t Screen: {2} \n Reactivity: {3} \t Overall: {4} \n"
+                                            + "Note: {5} \n\n",cur.battery, cur.camera, cur.screen, cur.reactivity, cur.overall, cur.note, i+1);
+                                }
+
+                                resValue["result"] = totalRatesString;
+                            }
+                            console.log("GET phoneRates succeed");
+                            res.send(resValue);
                             done();
                         }
                     }

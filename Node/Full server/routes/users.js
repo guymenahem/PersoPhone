@@ -354,7 +354,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                         var grade = 0;
 						
                         if (rows.length > 0) {
-                            grade = avg_value;
+                            grade = result.rows[0].avg_value;
                         }
 
                         console.log("GET cpu grade succeed");
@@ -427,7 +427,7 @@ router.getCameraGrade = function (user_id, phone_name) {
 					reject(err);
 					return;
                 }
-                var stream = client.query('SELECT select date_trunc(''day'',insertion_time) insertion_day,sum(value) sum_value from camera_usage where user_id = $1 and phone_name = $2 group by date_trunc(''day'',insertion_time);',
+                var stream = client.query('SELECT date_trunc(\'day\',insertion_time) insertion_day,sum(value) sum_value from camera_usage where user_id = $1 and phone_name = $2 group by date_trunc(\'day\',insertion_time);',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -439,7 +439,7 @@ router.getCameraGrade = function (user_id, phone_name) {
 						
                         var rows = result.rows;
 						var grade = 0;
-						var maxPicsPerDay = 100;
+						var maxPicsPerDay = 20;
 						
                         if (rows.length > 0) {
 							var avg = 0.0;

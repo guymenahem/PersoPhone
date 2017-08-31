@@ -5,62 +5,62 @@
     tools:context="com.persophone.persophone_bottom.com.persophone.persophone_application.UsageFragment">
 
     <LinearLayout
+        android:id="@+id/hel1_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/hel1_grid"
         android:orientation="vertical"
         android:weightSum="1">
 
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
-            android:layout_gravity="top"
-            android:layout_height="@dimen/top_tb_margin" />
+            android:layout_height="@dimen/top_tb_margin"
+            android:layout_gravity="top" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="Battery:"/>
+            android:text="Battery:"
+            android:textSize="16dp" />
 
         <com.jjoe64.graphview.GraphView
+            android:id="@+id/usage_graph"
             android:layout_width="match_parent"
-            android:layout_height="200dip"
-            android:id="@+id/usage_graph" />
+            android:layout_height="200dip" />
 
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.60"
             android:columnCount="3"
-            android:rowCount="6"
-            android:layout_weight="0.60">
+            android:rowCount="6">
 
             <!-- Battery -->
             <!-- Battery title-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=' Battery: '
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="0"
                 android:layout_row="0"
-                android:layout_column="0"/>
+                android:text=' Battery: '
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Battery value-->
             <TextView
                 android:id="@+id/battery_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='High battery usage'
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="1"
                 android:layout_row="0"
-                android:layout_column="1" />
+                android:text='High battery usage'
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Battery badge-->
             <TextView
                 android:id="@+id/battery_notification"
-                android:layout_row="0"
-                android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="0"
                 android:background="@drawable/danger_badge"
                 android:text="High"
                 android:textColor="#FFF"
@@ -72,28 +72,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=' Memory: '
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="0"
                 android:layout_row="1"
-                android:layout_column="0"/>
+                android:text=' Memory: '
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Memory value-->
             <TextView
                 android:id="@+id/memory_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='never critical'
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="1"
                 android:layout_row="1"
-                android:layout_column="1" />
+                android:text='never critical'
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Memory badge-->
             <TextView
                 android:id="@+id/memory_notification"
-                android:layout_row="1"
-                android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="1"
                 android:background="@drawable/ok_badge"
                 android:text="Low"
                 android:textColor="#FFF"
@@ -105,28 +105,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=' Storage: '
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="0"
                 android:layout_row="2"
-                android:layout_column="0"/>
+                android:text=' Storage: '
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Storage value-->
             <TextView
                 android:id="@+id/storage_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='Average free is 4GB'
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="1"
                 android:layout_row="2"
-                android:layout_column="1" />
+                android:text='Average free is 4GB'
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Storage badge-->
             <TextView
                 android:id="@+id/storage_notification"
-                android:layout_row="2"
-                android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="2"
                 android:background="@drawable/medium_badge"
                 android:text="Medium"
                 android:textColor="#FFF"
@@ -138,28 +138,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=' Cpu: '
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="0"
                 android:layout_row="3"
-                android:layout_column="0"/>
+                android:text=' Cpu: '
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Cpu value-->
             <TextView
                 android:id="@+id/cpu_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='Critical cpu'
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="1"
                 android:layout_row="3"
-                android:layout_column="1" />
+                android:text='Critical cpu'
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Cpu badge-->
             <TextView
                 android:id="@+id/cpu_notification"
-                android:layout_row="3"
-                android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="3"
                 android:background="@drawable/danger_badge"
                 android:text="High"
                 android:textColor="#FFF"
@@ -171,28 +171,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=' Camera: '
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="0"
                 android:layout_row="4"
-                android:layout_column="0"/>
+                android:text=' Camera: '
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Camera value-->
             <TextView
                 android:id="@+id/camera_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='Average camera usage'
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="1"
                 android:layout_row="4"
-                android:layout_column="1" />
+                android:text='Average camera usage'
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Camera badge-->
             <TextView
                 android:id="@+id/camera_notification"
-                android:layout_row="4"
-                android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="4"
                 android:background="@drawable/ok_badge"
                 android:text="Low"
                 android:textColor="#FFF"
@@ -204,28 +204,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=' Screen: '
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="0"
                 android:layout_row="5"
-                android:layout_column="0"/>
+                android:text=' Screen: '
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Screen value-->
             <TextView
                 android:id="@+id/screen_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='85% from max in market'
-                android:textSize="@dimen/rec_text_size"
+                android:layout_column="1"
                 android:layout_row="5"
-                android:layout_column="1" />
+                android:text='85% from max in market'
+                android:textSize="@dimen/rec_text_size" />
 
             <!-- Screen badge-->
             <TextView
                 android:id="@+id/screen_notification"
-                android:layout_row="5"
-                android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="5"
                 android:background="@drawable/ok_badge"
                 android:text="Low"
                 android:textColor="#FFF"

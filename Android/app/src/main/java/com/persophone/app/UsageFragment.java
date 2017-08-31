@@ -188,6 +188,22 @@ public class UsageFragment extends Fragment {
                         ((TextView) view.findViewById(R.id.camera_notification)).setText(badgeText);
                         ((TextView) view.findViewById(R.id.camera_notification)).setBackground(badge);
 
+                        // Populate battery usage graph
+                        /*
+                        LineGraphSeries<DataPoint> series;
+                        series = new LineGraphSeries<DataPoint>();
+                        Object[] points = (Object[]) response.get("points");
+
+                        for (int i = 0; i < points.length; i++){
+                            series.appendData(new DataPoint(points[i].x,points[i].y),true,points.length);
+                        }
+                        GraphView graph = (GraphView) view.findViewById(R.id.usage_graph);
+                        if (!series.isEmpty()) {
+                            graph.removeAllSeries();
+                            graph.addSeries(series);
+                        }*/
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

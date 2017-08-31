@@ -63,6 +63,25 @@ public class PhonesData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
+    public void GetPhoneRates(String phone_name, final Response.Listener<JSONArray> callback){
+
+        String parameters = new String("phone_name=" + phone_name);
+
+        JsonArrayRequest jsObjRequest = new JsonArrayRequest
+                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/phoneRates?" + parameters, null, callback, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
+
+
     private int calcParamImprovment(double param1, double param2){
         double improvement = param1 / param2;
         if (improvement > 1){

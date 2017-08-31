@@ -41,6 +41,36 @@ router.get('/all',
 		return console.log(err);		
 	});
 });
+
+router.get('/phoneRates', function (req, res) {
+    var pg = require('pg');
+    var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+    var phone_name = req.query.phone;
+    console.log(user_id);
+    pg.connect(conString,
+        function (err, client, done) {
+            if (err) {
+                console.error('error happened during userRates query', err);
+            }
+            else {
+                client.query('SELECT * FROM users_rates where phone_name = $1',
+                    [phone_name],
+                    function (err, result) {
+                        if (err) {
+                            console.error('error happened during query userRates query', err);
+                        }
+                        else {
+                            console.log("GET userRates succeed");
+                            res.send(result.rows);
+                            done();
+                        }
+                    }
+                );
+            }
+        }
+    );
+});
 	
 router.get('/recommendedPhones', 
 	function(req,res){

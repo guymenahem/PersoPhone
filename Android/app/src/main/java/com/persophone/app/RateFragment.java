@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
 
 import com.android.volley.Response;
@@ -89,6 +90,7 @@ public class RateFragment extends Fragment {
         float cameraRating = ((RatingBar) view.findViewById(R.id.camera_rating)).getRating();
         float reactivityRating = ((RatingBar) view.findViewById(R.id.reactivity_rating)).getRating();
         float overallRating = ((RatingBar) view.findViewById(R.id.overall_rating)).getRating();
+        String noteRating = ((EditText) view.findViewById(R.id.note_rating)).getText().toString();
 
         try {
             requestData.put("user",UsersData.CurrentUserId);
@@ -98,6 +100,7 @@ public class RateFragment extends Fragment {
             requestData.put("camera",cameraRating == 0.0 ? JSONObject.NULL : cameraRating);
             requestData.put("reactivity",reactivityRating == 0.0 ? JSONObject.NULL : reactivityRating);
             requestData.put("overall",overallRating == 0.0 ? JSONObject.NULL : overallRating);
+            requestData.put("note",!(noteRating != null && !noteRating.isEmpty()) ? JSONObject.NULL : noteRating);
             requestData.put("isNew",isNew);
 
             new UsersData().SaveUserRates(requestData, new Response.Listener<JSONObject>() {
@@ -151,6 +154,9 @@ public class RateFragment extends Fragment {
 
                             RatingBar overallRating = ((RatingBar) _view.findViewById(R.id.overall_rating));
                             overallRating.setRating(myResponse.isNull("overall") ? 0 : (float)myResponse.getDouble("overall"));
+
+                            EditText noteRating = ((EditText) _view.findViewById(R.id.note_rating));
+                            noteRating.setText(myResponse.getString("note"));
                         }
                         else{
                             isNew = true;

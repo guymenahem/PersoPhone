@@ -4,16 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.persophone.persophone_bottom.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
@@ -89,13 +92,15 @@ public class PhoneRecFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View inf = inflater.inflate(R.layout.fragment_phone_rec, container, false);
+        ((TextView)inf .findViewById(R.id.rec_user_rates)).setMovementMethod(new ScrollingMovementMethod());
+
         setPhone(inf);
         return inf;
     }
 
     private void setPhone(View v){
 
-
+        final  View viewForInnerFunc = v;
         JSONObject jsnImprovement = new PhonesData().CalculateImprovmentFromCurrentPhone(this.getArguments());
 
         Bundle args = this.getArguments();
@@ -122,6 +127,17 @@ public class PhoneRecFragment extends Fragment{
 
             ((TextView)v.findViewById(R.id.camera_value)).setText(args.getString("camera"));
             ((TextView)v.findViewById(R.id.price_value)).setText(args.getString("price"));
+
+            new PhonesData().GetPhoneRates(args.getString("name"), new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        ((TextView)viewForInnerFunc .findViewById(R.id.rec_user_rates)).setText(response.getString("result"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
         catch (Exception ex){
 

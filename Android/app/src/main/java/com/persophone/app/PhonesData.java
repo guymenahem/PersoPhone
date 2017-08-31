@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.persophone.app.RequestHandler;
 
@@ -62,6 +63,25 @@ public class PhonesData {
         // Access the RequestQueue through your singleton class.
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
+
+    public void GetPhoneRates(String phone_name, final Response.Listener<JSONObject> callback){
+
+        String parameters = new String("phone_name=" + phone_name);
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/phoneRates?" + parameters, null, callback, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
+
+
 
     private int calcParamImprovment(double param1, double param2){
         double improvement = param1 / param2;

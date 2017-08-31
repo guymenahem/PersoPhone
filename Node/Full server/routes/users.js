@@ -61,7 +61,8 @@ router.post('/userRates', function (req, res) {
 	var screen = req.body.screen;
 	var camera = req.body.camera;
 	var reactivity = req.body.reactivity;
-	var overall = req.body.overall;
+    var overall = req.body.overall;
+    var note = req.body.note;
 	var isNew = req.body.isNew;
 
 	var pg = require('pg');
@@ -75,8 +76,8 @@ router.post('/userRates', function (req, res) {
 			}
 			if (isNew){									
 				client.query(
-					'INSERT INTO users_rates (user_id, phone_name, battery, camera, screen, reactivity, overall, last_update_date) VALUES ($1, $2, $3, $4, $5,$6,$7, CURRENT_TIMESTAMP);',
-					[user_id, phone_name, battery, camera, screen, reactivity,overall],
+					'INSERT INTO users_rates (user_id, phone_name, battery, camera, screen, reactivity, overall, note, last_update_date) VALUES ($1, $2, $3, $4, $5,$6,$7,$8, CURRENT_TIMESTAMP);',
+					[user_id, phone_name, battery, camera, screen, reactivity,overall,note],
 					function(err, result) {
 						done();
 
@@ -93,9 +94,9 @@ router.post('/userRates', function (req, res) {
 			}
 			else{
 				client.query(
-					'UPDATE users_rates set battery=$1, camera=$2, screen=$3, reactivity=$4,overall=$5, last_update_date=CURRENT_TIMESTAMP'
-					+ ' WHERE user_id = $6 and phone_name=$7',
-					[battery, camera, screen, reactivity,overall,user_id,phone_name],
+					'UPDATE users_rates set battery=$1, camera=$2, screen=$3, reactivity=$4,overall=$5, note = $6, last_update_date=CURRENT_TIMESTAMP'
+					+ ' WHERE user_id = $7 and phone_name=$8',
+					[battery, camera, screen, reactivity,overall,note,user_id,phone_name],
 					function(err, result) {
 						done();
 
@@ -144,7 +145,6 @@ router.get('/userRates', function (req, res) {
 		}
 	);
 });
-
 
 router.post('/userPreferences', function (req, res) {
 	//var jsonReq = JSON.parse(req);
@@ -343,7 +343,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                 var stream = client.query('SELECT avg(value) avg_value FROM cpu_usage where user_id = $1 and phone_name = $2;',
                     [user_id, phone_name],
                     function (err, result) {
-
+                        var avg_value = 0.2;
                         if (err) {
 							console.error('error happened during cpu grade query', err);
                             reject(err);

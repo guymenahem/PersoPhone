@@ -508,6 +508,71 @@ router.getStorageGrade = function (user_id, phone_name) {
     });
 }
 
+///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
+router.getBatteryUsageGraph = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function (err, client, done) {
+                if (err) {
+					console.error('error happened during getStorageGrade query', err); 
+					reject(err);
+					return;
+                }
+                var stream = client.query('select date_trunc(\'hour\', insertion_time) sample_hour,round(avg(value)) sample_value from battery_usage where user_id = $1 and phone_name = $2 group by date_trunc(\'hour\', insertion_time) order by date_trunc(\'hour\', insertion_time) limit 24;',
+                    [user_id, phone_name],
+                    function (err, result) {
+
+                        if (err) {
+							console.error('error happened during getStorageGrade query', err);
+                            reject(err);
+							return;
+                        }
+
+                        var rows = result.rows;
+						var points = [];
+						
+						 if (rows.length > 0) {
+							
+                            for (var i = 0; i < rows.length; i++) {
+                                points += { "x" : rows[i].sample_hour , "y" : rows[i].sample_value};
+                            }
+                        }
+
+                        console.log("GET battery usage graph succeed");
+                        var result = { "batteryUsageGraph": points };
+                        fulfill(result);
+                    }
+                );
+                stream.on('end', done);
+            }
+        );
+    });
+}
+
+router.getBatteryUsage = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var p1 = router.getBatteryUsageGraph(user_id, phone_name);
+
+        Promise.all([p1]).then(values => {
+            (function formatUsage(usage) {
+                var formattedUsage = {};
+                for (var i = 0; i < usage.length; i++) {
+                    var prop = Object.getOwnPropertyNames(usage[i])[0];
+                    formattedUsage[prop] = usage[i][prop];
+                }
+
+                fulfill(formattedUsage);
+            })(values);            
+        },function(err){
+			return console.log(err);
+		})
+    });    
+}
+///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
+
 router.getAllGrades = function (user_id, phone_name) {
     return new Promise(function (fulfill, reject) {
         var p1 = router.getStorageGrade(user_id, phone_name);
@@ -586,6 +651,18 @@ router.get('/getAllGrades', function (req, res) {
     });
 });
 
+///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
+router.get('/batteryUsageGraph', function (req, res) {
+
+    var user_id = req.query.user;
+    var phone_name = req.query.phone_name;
+
+    router.getBatteryUsageGraph(user_id, phone_name).then(function (result) {
+        res.send(result);
+    });
+});
+
+///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
 /* GET ALL Users ID */
 router.get('/listIds', function (req, res) {
 

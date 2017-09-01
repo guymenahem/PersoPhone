@@ -140,7 +140,7 @@
 
 
         <Button
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="5dp"
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -244,7 +244,7 @@ public class UsageFragment extends Fragment {
             e.printStackTrace();
         }
         try {
-            new UsersData().GetAllGrades(new Response.Listener<JSONObject>() {
+            new UsersData().GetBatteryUsageGraph(new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {

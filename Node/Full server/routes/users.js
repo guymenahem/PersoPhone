@@ -288,29 +288,42 @@ router.getBatteryGrade = function (user_id, phone_name) {
 							
 							// Fetch deltas and calculate average usage
                             for (var i = 0; i < rows.length - 1; i++) {
-								if (rows[i] < 100){
+								if (rows[i].value < 100){
 									cnt++;
-									avg+= rows[i];
+									avg+= rows[i].value;
 								}
                                 if (rows[i + 1].value < rows[i].value) {
-                                    deltas.push(value);
+                                    deltas.push(rows[i].value - rows[i + 1].value);
                                 }
                             }
-							if (rows[rows.length - 1] < 100){
+							if (rows[rows.length - 1].value < 100){
 								cnt++;
-								avg+= rows[rows.length - 1];
+								avg+= rows[rows.length - 1].value;
 							}
 							
 							// Get average usage (Half of the grade)
-							avgRank = 0.5 - (avg / cnt / 2 / 100);
+							if (cnt == 0){
+								avgRank = 0.5;
+							}
+							else
+							{
+								avgRank = 0.5 - (avg / cnt / 2 / 100);
+							}
 							
 							avg = 0.0;
 							// Calculate deltas
 							for (var i = 0; i < deltas.length; i++)
 							{
-								avg += (100 / deltas[i]);
+								avg += (100 / deltas[i].value);
 							}
-							avg = avg / deltas.length / 2 / 100;
+							if (deltas.length == 0)
+							{
+								avg = 0;
+							}
+							else
+							{
+								avg = avg / deltas.length / 2 / 100;
+							}
 							
 							diffRank = 0.5 - avg;
                         }
@@ -343,7 +356,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                 var stream = client.query('SELECT avg(value) avg_value FROM cpu_usage where user_id = $1 and phone_name = $2;',
                     [user_id, phone_name],
                     function (err, result) {
-                        var avg_value = 0.2;
+                        //var avg_value = 0.2;
                         if (err) {
 							console.error('error happened during cpu grade query', err);
                             reject(err);
@@ -354,7 +367,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                         var grade = 0;
 						
                         if (rows.length > 0) {
-                            grade = result.rows[0].avg_value;
+                            grade = result.rows[0].avg_value / 100;
                         }
 
                         console.log("GET cpu grade succeed");
@@ -494,7 +507,13 @@ router.getStorageGrade = function (user_id, phone_name) {
 						var grade = 0;
 
                         if (rows.length == 1) {
-							grade = rows[0].free_storage / rows[0].total_usage;
+							if (rows[0].total_storage == 0) {
+								grade = 1;
+							}
+							else
+							{
+								grade = rows[0].free_storage / rows[0].total_storage;
+							}
                         }
 
                         console.log("GET storage grade succeed");

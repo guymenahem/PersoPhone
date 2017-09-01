@@ -16,6 +16,8 @@ public class RequestHandler {
     private static Context mCtx;
 
     public static final String URL_APP_SERVER = "http://ec2-35-157-26-139.eu-central-1.compute.amazonaws.com";
+    public static final String SERVER_AUTH = "ec2-35-157-26-139.eu-central-1.compute.amazonaws.com";
+    public static final String SERVER_SCHEME = "http";
 
     private RequestHandler(Context context) {
         mCtx = context;

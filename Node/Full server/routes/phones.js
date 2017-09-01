@@ -107,7 +107,7 @@ router.get('/recommendedPhones',
         Promise.all([getAllPhones(), users.getAllGrades(user_id, phone_name), users.getUserPreferences(user_id)]).then(function (values) {
 			var phones = values[0];								
 			var grades = values[1];
-            var prefernces = values[2][0];
+            var prefernces = values[2][0] || {};
 
 			var brands = [
 				{ name: 'apple', point: 1.0, factor: 1.07, screenFactor: 1.07, os:'ios' },

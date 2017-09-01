@@ -38,7 +38,7 @@ public class CollectorService extends Service {
 
     public int onStartCommand (Intent intent, int flags, int startId) {
 
-        android.os.Debug.waitForDebugger();
+        //android.os.Debug.waitForDebugger();
 
         this.collect();
         this.send();

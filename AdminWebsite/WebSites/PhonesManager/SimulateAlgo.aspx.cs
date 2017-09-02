@@ -39,6 +39,10 @@ public partial class SimulateAlgo : System.Web.UI.Page
             DeteleUser(userId);
             StimulateUser(userId, battery, CPU, RAM, Storage, Pictures);
         }
+        else
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "not all fields valid" + "');", true);
+        }
 
     }
 

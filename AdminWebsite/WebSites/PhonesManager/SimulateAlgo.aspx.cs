@@ -165,6 +165,18 @@ public partial class SimulateAlgo : System.Web.UI.Page
                     command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
                     command.ExecuteNonQuery();
 
+                    /* camera_usage */
+                    command = new NpgsqlCommand(
+                        @"INSERT INTO camera_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,@name,@value,@date);",
+                        connection);
+
+                    command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                    command.Parameters.AddWithValue("@name", NpgsqlTypes.NpgsqlDbType.Char, phoneName);
+                    command.Parameters.AddWithValue("@value", NpgsqlTypes.NpgsqlDbType.Double, Pictures);
+                    command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
+                    command.ExecuteNonQuery();
+
+
                     connection.Close();
                 }
                 catch (Exception e)
@@ -234,6 +246,14 @@ public partial class SimulateAlgo : System.Web.UI.Page
                         /* applications_usage */
                         command = new NpgsqlCommand(
                             @"DELETE FROM applications_usage WHERE user_id = @userid;",
+                            connection);
+
+                        command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                        command.ExecuteNonQuery();
+
+                        /* camera_usage */
+                        command = new NpgsqlCommand(
+                            @"DELETE FROM camera_usage WHERE user_id = @userid;",
                             connection);
 
                         command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);

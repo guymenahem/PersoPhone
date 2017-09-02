@@ -576,6 +576,7 @@ router.getAllGrades = function (user_id, phone_name) {
         var p3 = router.getCameraGrade(user_id, phone_name);
         var p4 = router.getCpuGrade(user_id, phone_name);
         var p5 = router.getRamGrade(user_id, phone_name);
+		
         Promise.all([p1, p2, p3, p4, p5]).then(values => {
             (function formatGrades(grades) {
                 var formattedGrades = {};

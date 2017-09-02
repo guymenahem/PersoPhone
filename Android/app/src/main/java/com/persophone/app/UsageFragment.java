@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -203,9 +204,13 @@ public class UsageFragment extends Fragment {
                         JSONArray points = response.getJSONArray("batteryUsageGraph");
                         for (int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
-                            DataPoint dp = new DataPoint(point.getDouble("y"),i);
+                            DataPoint dp = new DataPoint(i,point.getDouble("y"));
                             series.appendData(dp, true, points.length());
                         }
+                        graph.getViewport().setYAxisBoundsManual(true);
+                        graph.getViewport().setMaxY(100);
+                        graph.getViewport().setXAxisBoundsManual(true);
+                        graph.getViewport().setMaxX(7);
                         graph.addSeries(series);
                     } catch (JSONException e) {
                         e.printStackTrace();

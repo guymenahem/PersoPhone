@@ -349,7 +349,6 @@ router.getCpuGrade = function (user_id, phone_name) {
                 var stream = client.query('SELECT avg(value) avg_value FROM cpu_usage where user_id = $1 and phone_name = $2;',
                     [user_id, phone_name],
                     function (err, result) {
-                        var avg_value = 0.2;
                         if (err) {
 							console.error('error happened during cpu grade query', err);
                             reject(err);
@@ -360,7 +359,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                         var grade = 0;
 						
                         if (rows.length > 0) {
-                            grade = avg_value;
+                            grade = rows[0].avg_value;
                         }
 
                         console.log("GET cpu grade succeed");
@@ -493,7 +492,7 @@ router.getStorageGrade = function (user_id, phone_name) {
 						var grade = 0;
 
                         if (rows.length == 1) {
-							grade = 1 - rows[0].free_storage / rows[0].total_usage;
+							grade = 1 - (rows[0].free_storage / rows[0].total_storage);
                         }
 
                         console.log("GET storage grade succeed");
@@ -519,7 +518,7 @@ router.getBatteryUsageGraph = function (user_id, phone_name) {
 					reject(err);
 					return;
                 }
-                var stream = client.query('select date_trunc(\'hour\', insertion_time) sample_hour,round(avg(value)) sample_value from battery_usage where user_id = $1 and phone_name = $2 group by date_trunc(\'hour\', insertion_time) order by date_trunc(\'hour\', insertion_time) limit 24;',
+                var stream = client.query('select to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') sample_hour,round(avg(value)) sample_value from battery_usage where user_id = $1 and phone_name = $2 group by to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') order by to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') limit 7;',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -535,7 +534,7 @@ router.getBatteryUsageGraph = function (user_id, phone_name) {
 						 if (rows.length > 0) {
 							
                             for (var i = 0; i < rows.length; i++) {
-                                points += { "x" : rows[i].sample_hour , "y" : rows[i].sample_value};
+                                points.push({ "x" : rows[i].sample_hour , "y" : rows[i].sample_value});
                             }
                         }
 

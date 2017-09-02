@@ -201,14 +201,10 @@ public class UsageFragment extends Fragment {
                         GraphView graph = (GraphView) view.findViewById(R.id.usage_graph);
                         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
                         JSONArray points = response.getJSONArray("batteryUsageGraph");
-                        /*for (int i = 0; i < points.length(); i++) {
+                        for (int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
-                            DataPoint dp = new DataPoint(point.getDouble("x"),i);
+                            DataPoint dp = new DataPoint(point.getDouble("y"),i);
                             series.appendData(dp, true, points.length());
-                        }*/
-                        for (int i=0;i<500;i++)
-                        {
-                            series.appendData(new DataPoint(i,i),true,500);
                         }
                         graph.addSeries(series);
                     } catch (JSONException e) {

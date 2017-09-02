@@ -359,7 +359,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                         var grade = 0;
 						
                         if (rows.length > 0) {
-                            grade = rows[0].avg_value;
+                            grade = rows[0].avg_value / 100;
                         }
 
                         console.log("GET cpu grade succeed");

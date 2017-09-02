@@ -16,6 +16,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.persophone.persophone_bottom.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,7 +90,7 @@ public class UsageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_usage, container, false);
-        this.fillGraphExample(view);
+        //this.fillGraphExample(view);
         try {
             new UsersData().GetAllGrades(new Response.Listener<JSONObject>() {
                 @Override
@@ -192,36 +193,28 @@ public class UsageFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-/*            new UsersData().GetUserBatteryGrade(new Response.Listener<JSONObject>() {
+            });
+            new UsersData().GetBatteryUsageGraph(new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        double dGrade = response.getDouble("batteryGrade");
-                        String usageText = "Good battery usage";
-                        String badgeText = "Good";
-                        Drawable badge = getContext().getDrawable(R.drawable.ok_badge);
-
-                        // logic
-                        if (dGrade >= 0  && dGrade < 0.3){
-                            usageText = "Replace your battery";
-                            badgeText = "Critical";
-                            badge = getContext().getDrawable(R.drawable.danger_badge);
-                        }
-                        else if(dGrade < 0.7)
+                        GraphView graph = (GraphView) view.findViewById(R.id.usage_graph);
+                        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+                        JSONArray points = response.getJSONArray("batteryUsageGraph");
+                        /*for (int i = 0; i < points.length(); i++) {
+                            JSONObject point = points.getJSONObject(i);
+                            DataPoint dp = new DataPoint(point.getDouble("x"),i);
+                            series.appendData(dp, true, points.length());
+                        }*/
+                        for (int i=0;i<500;i++)
                         {
-                            usageText = "Average battery usage";
-                            badgeText = "Medium";
-                            badge = getContext().getDrawable(R.drawable.medium_badge);
+                            series.appendData(new DataPoint(i,i),true,500);
                         }
-                        ((TextView)view.findViewById(R.id.battery_usage)).setText(usageText);
-                        ((TextView)view.findViewById(R.id.battery_notification)).setText(badgeText);
-                        ((TextView)view.findViewById(R.id.battery_notification)).setBackground(badge);
-
+                        graph.addSeries(series);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-            });*/
             });
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -231,7 +224,7 @@ public class UsageFragment extends Fragment {
 
     private void fillGraphExample(View v){
         GraphView gw = (GraphView)v.findViewById(R.id.usage_graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+        /*LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 100),
                 new DataPoint(1, 95),
                 new DataPoint(2, 92),
@@ -241,7 +234,12 @@ public class UsageFragment extends Fragment {
                 new DataPoint(6, 5),
                 new DataPoint(7, 40),
                 new DataPoint(8, 95)
-        });
+        });*/
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+        for (int i=0;i<100;i++)
+        {
+            series.appendData(new DataPoint(i,i),true,100);
+        }
         gw.getViewport().setYAxisBoundsManual(true);
         gw.getViewport().setMaxY(100);
         gw.addSeries(series);

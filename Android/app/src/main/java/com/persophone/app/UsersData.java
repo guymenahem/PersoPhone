@@ -184,4 +184,26 @@ public class UsersData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
+    public void GetBatteryUsageGraph(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
+        // Create URL
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("users/batteryUsageGraph")
+                .appendQueryParameter("user", Integer.toString(UsersData.CurrentUserId))
+                .appendQueryParameter("phone_name", UsersData.CurrentUserDevDetails.GetDeviceName())
+                .build();
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+
+        // Access the RequestQueue through your singleton class.
+        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
+    }
 }

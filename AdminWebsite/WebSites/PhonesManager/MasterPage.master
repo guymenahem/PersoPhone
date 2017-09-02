@@ -1,0 +1,46 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link href="phonesStyle.css" rel="stylesheet" />
+    <title>
+        <asp:ContentPlaceHolder id="title" runat="server">
+        </asp:ContentPlaceHolder>
+    </title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+        </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+     <div class="wrapper" style="width:100%">
+         <div class="menu">
+             <ul>
+                 <li class="navigation_first_item">
+                     <a href="Default.aspx">Home</a>                     
+                 </li>
+                 <li>
+                     <a href="PhonesTable.aspx">Phone Manger</a>
+                 </li>
+                 <li>
+                     <a href="PhonesApi.aspx">Search Phones in API API</a>
+                 </li>
+             </ul>
+
+         </div>
+         <div class="clear"></div>
+        <div class="content" style="width:100%">
+            <asp:ContentPlaceHolder id="contentBody" runat="server">
+        
+            </asp:ContentPlaceHolder>
+        </div>
+         <div class="clear"></div>
+         <div class="footer">
+             <h2>PersoPhone Phone Data Manager WEBSITE</h2>
+         </div>
+        
+     </div>
+    </form>
+</body>
+</html>

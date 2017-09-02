@@ -189,7 +189,7 @@ public class UsersData {
         Uri uri = new Uri.Builder()
                 .scheme(RequestHandler.SERVER_SCHEME)
                 .authority(RequestHandler.SERVER_AUTH)
-                .path("users/batteryUsageGraph")
+                .path("users/getBatteryUsage")
                 .appendQueryParameter("user", Integer.toString(UsersData.CurrentUserId))
                 .appendQueryParameter("phone_name", UsersData.CurrentUserDevDetails.GetDeviceName())
                 .build();

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -190,27 +191,64 @@ public class UsageFragment extends Fragment {
                         ((TextView) view.findViewById(R.id.camera_notification)).setText(badgeText);
                         ((TextView) view.findViewById(R.id.camera_notification)).setBackground(badge);
 
+                        DisplayMetrics dm = getResources().getDisplayMetrics();
+
+                        double density = dm.density * 160;
+                        double x = Math.pow(dm.widthPixels / density, 2);
+                        double y = Math.pow(dm.heightPixels / density, 2);
+                        double screenInches = Math.sqrt(x + y);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
+            //UsersData.CurrentUserDevDetails.getScreenInches();
             new UsersData().GetBatteryUsageGraph(new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
                         GraphView graph = (GraphView) view.findViewById(R.id.usage_graph);
                         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
-                        JSONArray points = response.getJSONArray("batteryUsageGraph");
-                        for (int i = 0; i < points.length(); i++) {
-                            JSONObject point = points.getJSONObject(i);
-                            DataPoint dp = new DataPoint(i,point.getDouble("y"));
-                            series.appendData(dp, true, points.length());
+                        JSONArray dailyPoints = response.getJSONArray("batteryUsageGraphDay");
+                        JSONArray hourlyPoints = response.getJSONArray("batteryUsageGraphHour");
+                        JSONArray minutePoints = response.getJSONArray("batteryUsageGraphMinute");
+                        Log.d("dailyPoints2",dailyPoints.toString());
+                        Log.d("dailyPoints2 count","" +dailyPoints.length());
+                        Log.d("hourlyPoints2",hourlyPoints.toString());
+                        Log.d("hourlyPoints2 count",""+hourlyPoints.length());
+                        Log.d("minutePoints2",minutePoints.toString());
+                        Log.d("minutePoints2 count",""+minutePoints.length());
+                        if (dailyPoints.length() >= 6)
+                        {
+                            for (int i = 0; i < dailyPoints.length(); i++) {
+                                JSONObject point = dailyPoints.getJSONObject(i);
+                                DataPoint dp = new DataPoint(i,point.getDouble("y"));
+                                series.appendData(dp, true, dailyPoints.length());
+                                graph.getViewport().setXAxisBoundsManual(true);
+                                graph.getViewport().setMaxX(7);
+                            }
+                        }
+                        else {
+                            if (hourlyPoints.length() >= 20) {
+                                for (int i = 0; i < hourlyPoints.length(); i++) {
+                                    JSONObject point = hourlyPoints.getJSONObject(i);
+                                    DataPoint dp = new DataPoint(i, point.getDouble("y"));
+                                    series.appendData(dp, true, hourlyPoints.length());
+                                    graph.getViewport().setXAxisBoundsManual(true);
+                                    graph.getViewport().setMaxX(24);
+                                }
+                            } else {
+                                for (int i = 0; i < minutePoints.length(); i++) {
+                                    JSONObject point = minutePoints.getJSONObject(i);
+                                    DataPoint dp = new DataPoint(i, point.getDouble("y"));
+                                    series.appendData(dp, true, minutePoints.length());
+                                }
+                            }
                         }
                         graph.getViewport().setYAxisBoundsManual(true);
                         graph.getViewport().setMaxY(100);
-                        graph.getViewport().setXAxisBoundsManual(true);
-                        graph.getViewport().setMaxX(7);
+
                         graph.addSeries(series);
                     } catch (JSONException e) {
                         e.printStackTrace();

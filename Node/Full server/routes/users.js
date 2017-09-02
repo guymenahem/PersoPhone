@@ -437,7 +437,7 @@ router.getCameraGrade = function (user_id, phone_name) {
 						
                         var rows = result.rows;
 						var grade = 0;
-						var maxPicsPerDay = 100;
+						var maxPicsPerDay = 20;
 						
                         if (rows.length > 0) {
 							var avg = 0.0;
@@ -506,7 +506,7 @@ router.getStorageGrade = function (user_id, phone_name) {
     });
 }
 ///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
-router.getBatteryUsageGraph = function (user_id, phone_name) {
+router.getBatteryUsageGraphMinute = function (user_id, phone_name) {
     return new Promise(function (fulfill, reject) {
         var pg = require('pg');
         var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
@@ -518,7 +518,7 @@ router.getBatteryUsageGraph = function (user_id, phone_name) {
 					reject(err);
 					return;
                 }
-                var stream = client.query('select to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') sample_hour,round(avg(value)) sample_value from battery_usage where user_id = $1 and phone_name = $2 group by to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') order by to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') limit 7;',
+                var stream = client.query('select insertion_time sample_minute,value sample_value from battery_usage where user_id = $1 and phone_name = $2 order by insertion_time desc limit 720;',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -533,13 +533,96 @@ router.getBatteryUsageGraph = function (user_id, phone_name) {
 						
 						 if (rows.length > 0) {
 							
-                            for (var i = 0; i < rows.length; i++) {
+                            for (var i = rows.length - 1; i >= 0; i--) {
+                                points.push({ "x" : rows[i].sample_minute , "y" : rows[i].sample_value});
+                            }
+                        }
+
+                        console.log("GET battery usage graph succeed");
+                        var result = { "batteryUsageGraphMinute": points };
+                        fulfill(result);
+                    }
+                );
+                stream.on('end', done);
+            }
+        );
+    });
+}
+router.getBatteryUsageGraphHour = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function (err, client, done) {
+                if (err) {
+					console.error('error happened during getStorageGrade query', err); 
+					reject(err);
+					return;
+                }
+                var stream = client.query('select to_char(date_trunc(\'hour\', insertion_time),\'yyyy-mm-dd HH24:00:00\') sample_hour,round(avg(value)) sample_value from battery_usage where user_id = $1 and phone_name = $2 group by to_char(date_trunc(\'hour\', insertion_time),\'yyyy-mm-dd HH24:00:00\') order by to_char(date_trunc(\'hour\', insertion_time),\'yyyy-mm-dd HH24:00:00\') desc limit 24;',
+                    [user_id, phone_name],
+                    function (err, result) {
+
+                        if (err) {
+							console.error('error happened during getStorageGrade query', err);
+                            reject(err);
+							return;
+                        }
+
+                        var rows = result.rows;
+						var points = [];
+						
+						 if (rows.length > 0) {
+							
+                            for (var i = rows.length - 1; i >= 0; i--) {
                                 points.push({ "x" : rows[i].sample_hour , "y" : rows[i].sample_value});
                             }
                         }
 
                         console.log("GET battery usage graph succeed");
-                        var result = { "batteryUsageGraph": points };
+                        var result = { "batteryUsageGraphHour": points };
+                        fulfill(result);
+                    }
+                );
+                stream.on('end', done);
+            }
+        );
+    });
+}
+router.getBatteryUsageGraphDay = function (user_id, phone_name) {
+    return new Promise(function (fulfill, reject) {
+        var pg = require('pg');
+        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
+
+        pg.connect(conString,
+            function (err, client, done) {
+                if (err) {
+					console.error('error happened during getStorageGrade query', err); 
+					reject(err);
+					return;
+                }
+                var stream = client.query('select to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') sample_day,round(avg(value)) sample_value from battery_usage where user_id = $1 and phone_name = $2 group by to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') order by to_char(date_trunc(\'day\', insertion_time),\'yyyy-mm-dd\') desc limit 7;',
+                    [user_id, phone_name],
+                    function (err, result) {
+
+                        if (err) {
+							console.error('error happened during getStorageGrade query', err);
+                            reject(err);
+							return;
+                        }
+
+                        var rows = result.rows;
+						var points = [];
+						
+						 if (rows.length > 0) {
+                            for (var i = rows.length - 1; i >= 0; i--) {
+                                points.push({ "x" : rows[i].sample_day , "y" : rows[i].sample_value});
+                            }
+                        }
+
+                        console.log("GET battery usage graph succeed");
+                        var result = { "batteryUsageGraphDay": points };
                         fulfill(result);
                     }
                 );
@@ -551,9 +634,11 @@ router.getBatteryUsageGraph = function (user_id, phone_name) {
 
 router.getBatteryUsage = function (user_id, phone_name) {
     return new Promise(function (fulfill, reject) {
-        var p1 = router.getBatteryUsageGraph(user_id, phone_name);
+        var p1 = router.getBatteryUsageGraphMinute(user_id, phone_name);
+		var p2 = router.getBatteryUsageGraphHour(user_id, phone_name);
+		var p3 = router.getBatteryUsageGraphDay(user_id, phone_name);
 
-        Promise.all([p1]).then(values => {
+        Promise.all([p1,p2,p3]).then(values => {
             (function formatUsage(usage) {
                 var formattedUsage = {};
                 for (var i = 0; i < usage.length; i++) {
@@ -648,12 +733,12 @@ router.get('/getAllGrades', function (req, res) {
     });
 });
 ///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
-router.get('/batteryUsageGraph', function (req, res) {
+router.get('/getBatteryUsage', function (req, res) {
 
     var user_id = req.query.user;
     var phone_name = req.query.phone_name;
 
-    router.getBatteryUsageGraph(user_id, phone_name).then(function (result) {
+    router.getBatteryUsage(user_id, phone_name).then(function (result) {
         res.send(result);
     });
 });

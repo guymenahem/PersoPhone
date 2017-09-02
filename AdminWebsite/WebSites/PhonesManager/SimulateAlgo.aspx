@@ -33,6 +33,11 @@
         <asp:Label ID="Label6" runat="server" Text="Camera Grade:"></asp:Label>
         <asp:TextBox ID="txtCamera" runat="server"></asp:TextBox>
         <br />
+        <asp:RadioButtonList ID="RadioButtonList" runat="server">
+            <asp:ListItem>High</asp:ListItem>
+            <asp:ListItem>Medium</asp:ListItem>
+            <asp:ListItem>Low</asp:ListItem>
+        </asp:RadioButtonList>
         <br />
         <br />
         <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Simulate" />

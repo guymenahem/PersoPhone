@@ -190,20 +190,38 @@ public class UsageFragment extends Fragment {
                         ((TextView) view.findViewById(R.id.camera_usage)).setText(usageText);
                         ((TextView) view.findViewById(R.id.camera_notification)).setText(badgeText);
                         ((TextView) view.findViewById(R.id.camera_notification)).setBackground(badge);
-
+                        double screenSize = UsersData.CurrentUserDevDetails.getScreenInches();
+                        Log.d("SCREEN SIZE" , ""+screenSize);
+                        int perc = (int) Math.round(screenSize/6.4 * 100);
+                        ((TextView) view.findViewById(R.id.screen_usage)).setText(""+perc+"% from max in market");
+                        if (perc >= 70) {
+                            badgeText = "Low";
+                            badge = getContext().getDrawable(R.drawable.ok_badge);
+                        } else if (perc >= 50)
+                        {
+                            badgeText = "Medium";
+                            badge = getContext().getDrawable(R.drawable.medium_badge);
+                        }
+                        else
+                        {
+                            badgeText = "High";
+                            badge = getContext().getDrawable(R.drawable.danger_badge);
+                        }
+                        ((TextView) view.findViewById(R.id.screen_notification)).setText(badgeText);
+                        ((TextView) view.findViewById(R.id.screen_notification)).setBackground(badge);
+                        /*
                         DisplayMetrics dm = getResources().getDisplayMetrics();
 
                         double density = dm.density * 160;
                         double x = Math.pow(dm.widthPixels / density, 2);
                         double y = Math.pow(dm.heightPixels / density, 2);
-                        double screenInches = Math.sqrt(x + y);
+                        double screenInches = Math.sqrt(x + y);*/
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
-            //UsersData.CurrentUserDevDetails.getScreenInches();
             new UsersData().GetBatteryUsageGraph(new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -213,12 +231,6 @@ public class UsageFragment extends Fragment {
                         JSONArray dailyPoints = response.getJSONArray("batteryUsageGraphDay");
                         JSONArray hourlyPoints = response.getJSONArray("batteryUsageGraphHour");
                         JSONArray minutePoints = response.getJSONArray("batteryUsageGraphMinute");
-                        Log.d("dailyPoints2",dailyPoints.toString());
-                        Log.d("dailyPoints2 count","" +dailyPoints.length());
-                        Log.d("hourlyPoints2",hourlyPoints.toString());
-                        Log.d("hourlyPoints2 count",""+hourlyPoints.length());
-                        Log.d("minutePoints2",minutePoints.toString());
-                        Log.d("minutePoints2 count",""+minutePoints.length());
                         if (dailyPoints.length() >= 6)
                         {
                             for (int i = 0; i < dailyPoints.length(); i++) {
@@ -227,6 +239,7 @@ public class UsageFragment extends Fragment {
                                 series.appendData(dp, true, dailyPoints.length());
                                 graph.getViewport().setXAxisBoundsManual(true);
                                 graph.getViewport().setMaxX(7);
+                                graph.setTitle(" Battery: Last 7 days");
                             }
                         }
                         else {
@@ -237,12 +250,14 @@ public class UsageFragment extends Fragment {
                                     series.appendData(dp, true, hourlyPoints.length());
                                     graph.getViewport().setXAxisBoundsManual(true);
                                     graph.getViewport().setMaxX(24);
+                                    graph.setTitle(" Battery: Last 24 hours");
                                 }
                             } else {
                                 for (int i = 0; i < minutePoints.length(); i++) {
                                     JSONObject point = minutePoints.getJSONObject(i);
                                     DataPoint dp = new DataPoint(i, point.getDouble("y"));
                                     series.appendData(dp, true, minutePoints.length());
+                                    graph.setTitle(" Battery: Last 12 hours");
                                 }
                             }
                         }

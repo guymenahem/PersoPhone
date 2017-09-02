@@ -1,5 +1,7 @@
 package com.persophone.app;
 
+import android.icu.lang.UScript;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -29,9 +31,14 @@ public class PhonesData {
 
     public void GetAllPhonesData(final Response.Listener<JSONArray> callback){
 
-        String params = "";
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("phones/phonesList")
+                .build();
+
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
-                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/phonesList" + params, null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -49,10 +56,16 @@ public class PhonesData {
 
     public void GetRecomendedPhones(final Response.Listener<JSONArray> callback){
 
-        String parameters = new String("user=" + UsersData.CurrentUserId + "&phone_name=" + UsersData.CurrentUserDevDetails.GetDeviceName());
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("phones/recommendedPhones")
+                .appendQueryParameter("user", Integer.toString(UsersData.CurrentUserId))
+                .appendQueryParameter("phone_name", UsersData.CurrentUserDevDetails.GetDeviceName())
+                .build();
 
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
-                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/recommendedPhones?" + parameters, null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -66,10 +79,15 @@ public class PhonesData {
 
     public void GetPhoneRates(String phone_name, final Response.Listener<JSONObject> callback){
 
-        String parameters = new String("phone_name=" + phone_name);
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("phones/phoneRates")
+                .appendQueryParameter("phone_name", phone_name)
+                .build();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, RequestHandler.URL_APP_SERVER + "/phones/phoneRates?" + parameters, null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "276498086485",
+    "firebase_url": "https://persophone-f1a5f.firebaseio.com",
+    "project_id": "persophone-f1a5f",
+    "storage_bucket": "persophone-f1a5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276498086485:android:9aa4b5957e06d58e",
+        "android_client_info": {
+          "package_name": "com.persophone.persophone_bottom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276498086485-ujm4mtoijd5qd7je7ehoc41k9rk0qvpd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.persophone.persophone_bottom",
+            "certificate_hash": "a155c4c773ae4adf9ad119b68b538857747378aa"
+          }
+        },
+        {
+          "client_id": "276498086485-n0nnvi0hnrrpahfobrpe0kvloe21gl38.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZvGTCSrcL4MpPRVkjrXi-53bED4W5j-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276498086485-n0nnvi0hnrrpahfobrpe0kvloe21gl38.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

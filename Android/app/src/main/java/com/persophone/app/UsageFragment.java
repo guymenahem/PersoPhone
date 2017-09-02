@@ -16,7 +16,6 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.persophone.persophone_bottom.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -189,22 +188,6 @@ public class UsageFragment extends Fragment {
                         ((TextView) view.findViewById(R.id.camera_notification)).setText(badgeText);
                         ((TextView) view.findViewById(R.id.camera_notification)).setBackground(badge);
 
-                        // Populate battery usage graph
-                        /*
-                        LineGraphSeries<DataPoint> series;
-                        series = new LineGraphSeries<DataPoint>();
-                        Object[] points = (Object[]) response.get("points");
-
-                        for (int i = 0; i < points.length; i++){
-                            series.appendData(new DataPoint(points[i].x,points[i].y),true,points.length);
-                        }
-                        GraphView graph = (GraphView) view.findViewById(R.id.usage_graph);
-                        if (!series.isEmpty()) {
-                            graph.removeAllSeries();
-                            graph.addSeries(series);
-                        }*/
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -239,35 +222,6 @@ public class UsageFragment extends Fragment {
                     }
                 }
             });*/
-            });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            new UsersData().GetBatteryUsageGraph(new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        // Populate battery usage graph
-
-                        LineGraphSeries<DataPoint> series;
-                        series = new LineGraphSeries<DataPoint>();
-                        JSONArray batteryUsageArray = new JSONArray((response.get("batteryUsageGraph")));
-
-                        for (int i = 0; i < batteryUsageArray.length(); i++){
-                            JSONObject point = batteryUsageArray.getJSONObject(i);
-                            series.appendData(new DataPoint(i,point.getDouble("y")),true,batteryUsageArray.length());
-                        }
-                        GraphView graph = (GraphView) view.findViewById(R.id.usage_graph);
-                        if (!series.isEmpty()) {
-                            graph.removeAllSeries();
-                            graph.addSeries(series);
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
             });
         } catch (MalformedURLException e) {
             e.printStackTrace();

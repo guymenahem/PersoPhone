@@ -1,5 +1,7 @@
 package com.persophone.app;
 
+import android.net.Uri;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -41,14 +43,15 @@ public class UsersData {
 
     public void GetUserPreferences(final Response.Listener<JSONArray> callback) throws MalformedURLException {
         // Create URL
-        int userid = CurrentUserId;
-        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userPreferences");
-        String parameters = new String("user=" + userid);
-
-        URL reqUrl = new URL(baseURL + "?" + parameters);
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("users/userPreferences")
+                .appendQueryParameter("user", Integer.toString(UsersData.CurrentUserId))
+                .build();
 
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
-                (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -115,14 +118,16 @@ public class UsersData {
 
     public void GetUserRates(final Response.Listener<JSONArray> callback) throws MalformedURLException {
         // Create URL
-        int userid = CurrentUserId;
-        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/userRates");
-        String parameters = new String("user=" + userid +"&phone=" + CurrentUserDevDetails.GetDeviceName());
-
-        URL reqUrl = new URL(baseURL + "?" + parameters);
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("users/userRates")
+                .appendQueryParameter("user", Integer.toString(UsersData.CurrentUserId))
+                .appendQueryParameter("phone", UsersData.CurrentUserDevDetails.GetDeviceName())
+                .build();
 
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
-                (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -135,15 +140,16 @@ public class UsersData {
     }
 
     public void GetUserBatteryGrade(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
-        // Create URL
-        int userid = UsersData.CurrentUserId;
-        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/batteryUsageGrade");
-        String parameters = new String("user=" + userid + "&phone_name=" + UsersData.CurrentUserDevDetails.GetDeviceName());
-
-        URL reqUrl = new URL(baseURL + "?" + parameters);
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("users/batteryUsageGrade")
+                .appendQueryParameter("user", Integer.toString(UsersData.CurrentUserId))
+                .appendQueryParameter("phone_name", UsersData.CurrentUserDevDetails.GetDeviceName())
+                .build();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -157,14 +163,16 @@ public class UsersData {
 
     public void GetAllGrades(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
         // Create URL
-        int userid = UsersData.CurrentUserId;
-        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/getAllGrades");
-        String parameters = new String("user=" + userid + "&phone_name=" + UsersData.CurrentUserDevDetails.GetDeviceName());
-
-        URL reqUrl = new URL(baseURL + "?" + parameters);
+        Uri uri = new Uri.Builder()
+                .scheme(RequestHandler.SERVER_SCHEME)
+                .authority(RequestHandler.SERVER_AUTH)
+                .path("users/getAllGrades")
+                .appendQueryParameter("user", Integer.toString(UsersData.CurrentUserId))
+                .appendQueryParameter("phone_name", UsersData.CurrentUserDevDetails.GetDeviceName())
+                .build();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
+                (Request.Method.GET, uri.toString(), null, callback, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -176,24 +184,4 @@ public class UsersData {
         RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
     }
 
-    public void GetBatteryUsageGraph(final  Response.Listener<JSONObject> callback) throws MalformedURLException {
-        // Create URL
-        int userid = UsersData.CurrentUserId;
-        String baseURL = new String(RequestHandler.URL_APP_SERVER + "/users/batteryUsageGraph");
-        String parameters = new String("user=" + userid + "&phone_name=" + UsersData.CurrentUserDevDetails.GetDeviceName());
-
-        URL reqUrl = new URL(baseURL + "?" + parameters);
-
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, reqUrl.toString(), null, callback, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                    }
-                });
-
-        // Access the RequestQueue through your singleton class.
-        RequestHandler.getInstance(null).addToRequestQueue(jsObjRequest);
-    }
 }

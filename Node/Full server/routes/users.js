@@ -288,42 +288,29 @@ router.getBatteryGrade = function (user_id, phone_name) {
 							
 							// Fetch deltas and calculate average usage
                             for (var i = 0; i < rows.length - 1; i++) {
-								if (rows[i].value < 100){
+								if (rows[i] < 100){
 									cnt++;
-									avg+= rows[i].value;
+									avg+= rows[i];
 								}
                                 if (rows[i + 1].value < rows[i].value) {
-                                    deltas.push(rows[i].value - rows[i + 1].value);
+                                    deltas.push(value);
                                 }
                             }
-							if (rows[rows.length - 1].value < 100){
+							if (rows[rows.length - 1] < 100){
 								cnt++;
-								avg+= rows[rows.length - 1].value;
+								avg+= rows[rows.length - 1];
 							}
 							
 							// Get average usage (Half of the grade)
-							if (cnt == 0){
-								avgRank = 0.5;
-							}
-							else
-							{
-								avgRank = 0.5 - (avg / cnt / 2 / 100);
-							}
+							avgRank = 0.5 - (avg / cnt / 2 / 100);
 							
 							avg = 0.0;
 							// Calculate deltas
 							for (var i = 0; i < deltas.length; i++)
 							{
-								avg += (100 / deltas[i].value);
+								avg += (100 / deltas[i]);
 							}
-							if (deltas.length == 0)
-							{
-								avg = 0;
-							}
-							else
-							{
-								avg = avg / deltas.length / 2 / 100;
-							}
+							avg = avg / deltas.length / 2 / 100;
 							
 							diffRank = 0.5 - avg;
                         }
@@ -362,7 +349,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                 var stream = client.query('SELECT avg(value) avg_value FROM cpu_usage where user_id = $1 and phone_name = $2;',
                     [user_id, phone_name],
                     function (err, result) {
-                        //var avg_value = 0.2;
+                        var avg_value = 0.2;
                         if (err) {
 							console.error('error happened during cpu grade query', err);
                             reject(err);
@@ -373,7 +360,7 @@ router.getCpuGrade = function (user_id, phone_name) {
                         var grade = 0;
 						
                         if (rows.length > 0) {
-                            grade = result.rows[0].avg_value / 100;
+                            grade = avg_value;
                         }
 
                         console.log("GET cpu grade succeed");
@@ -451,7 +438,7 @@ router.getCameraGrade = function (user_id, phone_name) {
 						
                         var rows = result.rows;
 						var grade = 0;
-						var maxPicsPerDay = 20;
+						var maxPicsPerDay = 100;
 						
                         if (rows.length > 0) {
 							var avg = 0.0;
@@ -506,13 +493,7 @@ router.getStorageGrade = function (user_id, phone_name) {
 						var grade = 0;
 
                         if (rows.length == 1) {
-							if (rows[0].total_storage == 0) {
-								grade = 1;
-							}
-							else
-							{
-								grade = rows[0].free_storage / rows[0].total_storage;
-							}
+							grade = rows[0].free_storage / rows[0].total_usage;
                         }
 
                         console.log("GET storage grade succeed");
@@ -525,71 +506,6 @@ router.getStorageGrade = function (user_id, phone_name) {
         );
     });
 }
-
-///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
-router.getBatteryUsageGraph = function (user_id, phone_name) {
-    return new Promise(function (fulfill, reject) {
-        var pg = require('pg');
-        var conString = 'postgres://postgres:postgres@persodb.c9c4ima6hezo.eu-central-1.rds.amazonaws.com/postgres';// make sure to match your own database's credentials
-
-        pg.connect(conString,
-            function (err, client, done) {
-                if (err) {
-					console.error('error happened during getStorageGrade query', err); 
-					reject(err);
-					return;
-                }
-                var stream = client.query('select date_trunc(\'hour\', insertion_time) sample_hour,round(avg(value)) sample_value from battery_usage where user_id = $1 and phone_name = $2 group by date_trunc(\'hour\', insertion_time) order by date_trunc(\'hour\', insertion_time) limit 24;',
-                    [user_id, phone_name],
-                    function (err, result) {
-
-                        if (err) {
-							console.error('error happened during getStorageGrade query', err);
-                            reject(err);
-							return;
-                        }
-
-                        var rows = result.rows;
-						var points = [];
-						
-						 if (rows.length > 0) {
-							
-                            for (var i = 0; i < rows.length; i++) {
-                                points += { "x" : rows[i].sample_hour , "y" : rows[i].sample_value};
-                            }
-                        }
-
-                        console.log("GET battery usage graph succeed");
-                        var result = { "batteryUsageGraph": points };
-                        fulfill(result);
-                    }
-                );
-                stream.on('end', done);
-            }
-        );
-    });
-}
-
-router.getBatteryUsage = function (user_id, phone_name) {
-    return new Promise(function (fulfill, reject) {
-        var p1 = router.getBatteryUsageGraph(user_id, phone_name);
-
-        Promise.all([p1]).then(values => {
-            (function formatUsage(usage) {
-                var formattedUsage = {};
-                for (var i = 0; i < usage.length; i++) {
-                    var prop = Object.getOwnPropertyNames(usage[i])[0];
-                    formattedUsage[prop] = usage[i][prop];
-                }
-
-                fulfill(formattedUsage);
-            })(values);            
-        },function(err){
-			return console.log(err);
-		})
-    });    
-}
-///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
 
 router.getAllGrades = function (user_id, phone_name) {
     return new Promise(function (fulfill, reject) {
@@ -669,18 +585,6 @@ router.get('/getAllGrades', function (req, res) {
     });
 });
 
-///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
-router.get('/batteryUsageGraph', function (req, res) {
-
-    var user_id = req.query.user;
-    var phone_name = req.query.phone_name;
-
-    router.getBatteryUsageGraph(user_id, phone_name).then(function (result) {
-        res.send(result);
-    });
-});
-
-///////////////////////////////////Added by adam 31/08 21:22///////////////////////////////////////////////
 /* GET ALL Users ID */
 router.get('/listIds', function (req, res) {
 

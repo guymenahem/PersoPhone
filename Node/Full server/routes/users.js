@@ -266,7 +266,7 @@ router.getBatteryGrade = function (user_id, phone_name) {
 					return;
                 }
 				
-                var stream = client.query('SELECT * FROM battery_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                var stream = client.query('SELECT avg(value) avg_value FROM battery_usage where user_id = $1 and phone_name = $2 and value <> 100;',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -275,7 +275,7 @@ router.getBatteryGrade = function (user_id, phone_name) {
                             reject(err);
 							return;
                         }
-
+						/*
                         var rows = result.rows;
 						var grade = 0.0;
 						var avgRank = 0.0;
@@ -328,7 +328,13 @@ router.getBatteryGrade = function (user_id, phone_name) {
 							diffRank = 0.5 - avg;
                         }
 
-                        grade = avgRank + diffRank;
+                        grade = avgRank + diffRank;*/
+						var rows = result.rows;
+                        var grade = 0;
+						
+                        if (rows.length > 0) {
+                            grade = result.rows[0].avg_value / 100;
+                        }
 
                         console.log("GET battery grade succeed");
                         var result = { "batteryGrade": grade };
@@ -393,7 +399,7 @@ router.getRamGrade = function (user_id, phone_name) {
                     reject(err);
                     return;
                 }
-                var stream = client.query('SELECT * FROM ram_usage where user_id = $1 and phone_name = $2 order by insertion_time asc;',
+                var stream = client.query('SELECT avg(value) avg_value FROM ram_usage where user_id = $1 and phone_name = $2;',
                     [user_id, phone_name],
                     function (err, result) {
 
@@ -404,18 +410,11 @@ router.getRamGrade = function (user_id, phone_name) {
                         }
 
                         var rows = result.rows;
-
-                        if (rows.length > 0) {
-                            /*var deltas = [];
-
-                            for (var i = 0; i < rows.length - 1; i++) {
-                                if (rows[i + 1].value < rows[i].value) {
-                                    deltas.push(value);
-                                }
-                            }*/
-                        }
-
                         var grade = 0;
+						
+                        if (rows.length > 0) {
+                            grade = result.rows[0].avg_value / 100;
+                        }
 
                         console.log("GET ram grade succeed");
                         var result = { "ramGrade": grade };

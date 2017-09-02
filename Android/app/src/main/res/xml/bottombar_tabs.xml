@@ -22,9 +22,9 @@
         icon="@drawable/ic_rate"
         title="@string/bot_str_rate" />
 
-    <tab
+    <!--<tab
         id="@+id/bot_share"
         icon="@drawable/ic_share"
-        title="@string/bot_str_share" />
+        title="@string/bot_str_share" />-->
 
 </tabs>

@@ -173,13 +173,13 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             // choose share
-            case R.id.bot_share:
+            /*case R.id.bot_share:
                 Log.e("CHANGE","share");
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, ShareFragment.newInstance("",""), "Share Fragment")
                         .commit();
-                break;
+                break;*/
         }
     }
 

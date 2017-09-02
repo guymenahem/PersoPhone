@@ -81,16 +81,30 @@ public partial class SimulateAlgo : System.Web.UI.Page
             {
                 try
                 {
-                    DateTime dt = DateTime.Now;
-
                     connection.Open();
 
-                    /* RAM */
+                    /* Select User Phone name */
                     NpgsqlCommand command = new NpgsqlCommand(
-                        @"INSERT INTO ram_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,'Simulator',@value,@date);",
+                        @"SELECT phone_name FROM users WHERE id = @userid;",
+                        connection);
+                    command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                    NpgsqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    string phoneName = reader[0].ToString();
+                    reader.Close();
+                    
+
+                    DateTime dt = DateTime.Now;
+
+                    
+
+                    /* RAM */
+                    command = new NpgsqlCommand(
+                        @"INSERT INTO ram_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,@name,@value,@date);",
                         connection);
 
                     command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                    command.Parameters.AddWithValue("@name", NpgsqlTypes.NpgsqlDbType.Char, phoneName);
                     command.Parameters.AddWithValue("@value", NpgsqlTypes.NpgsqlDbType.Double, (double)RAM);
                     command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
                     command.ExecuteNonQuery();
@@ -109,40 +123,44 @@ public partial class SimulateAlgo : System.Web.UI.Page
 
                     /* battery_usage */
                     command = new NpgsqlCommand(
-                        @"INSERT INTO battery_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,'Simulator',@value,@date);",
+                        @"INSERT INTO battery_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,@name,@value,@date);",
                         connection);
 
                     command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                    command.Parameters.AddWithValue("@name", NpgsqlTypes.NpgsqlDbType.Char, phoneName);
                     command.Parameters.AddWithValue("@value", NpgsqlTypes.NpgsqlDbType.Double, (double)battery);
                     command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
                     command.ExecuteNonQuery();
 
                     /* cpu_usage */
                     command = new NpgsqlCommand(
-                        @"INSERT INTO cpu_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,'Simulator',@value,@date);",
+                        @"INSERT INTO cpu_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,@name,@value,@date);",
                         connection);
 
                     command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                    command.Parameters.AddWithValue("@name", NpgsqlTypes.NpgsqlDbType.Char, phoneName);
                     command.Parameters.AddWithValue("@value", NpgsqlTypes.NpgsqlDbType.Double, (double)CPU);
                     command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
                     command.ExecuteNonQuery();
 
                     /* storage_usage */
                     command = new NpgsqlCommand(
-                        @"INSERT INTO storage_usage(user_id,phone_name,free_storage,total_storage,insertion_time) VALUES(@userid,'Simulator',@free,50,@date);",
+                        @"INSERT INTO storage_usage(user_id,phone_name,free_storage,total_storage,insertion_time) VALUES(@userid,@name,@free,50,@date);",
                         connection);
 
                     command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                    command.Parameters.AddWithValue("@name", NpgsqlTypes.NpgsqlDbType.Char, phoneName);
                     command.Parameters.AddWithValue("@free", NpgsqlTypes.NpgsqlDbType.Double, (double)(int)((double)Storage/2));
                     command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
                     command.ExecuteNonQuery();
 
                     /* applications_usage */
                     command = new NpgsqlCommand(
-                        @"INSERT INTO applications_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,'Simulator',@value,@date);",
+                        @"INSERT INTO applications_usage(user_id,phone_name,value,insertion_time) VALUES(@userid,@name,@value,@date);",
                         connection);
 
                     command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
+                    command.Parameters.AddWithValue("@name", NpgsqlTypes.NpgsqlDbType.Char, phoneName);
                     command.Parameters.AddWithValue("@value", NpgsqlTypes.NpgsqlDbType.Text, "");
                     command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
                     command.ExecuteNonQuery();

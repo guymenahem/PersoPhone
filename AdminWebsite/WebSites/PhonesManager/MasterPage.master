@@ -24,7 +24,7 @@
                      <a href="PhonesTable.aspx">Phone Manger</a>
                  </li>
                  <li>
-                     <a href="PhonesApi.aspx">Search Phones in API API</a>
+                     <a href="PhonesApi.aspx">Search Phones in External API</a>
                  </li>
              </ul>
 

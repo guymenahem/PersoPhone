@@ -47,10 +47,10 @@ public partial class SimulateAlgo : System.Web.UI.Page
         switch(RadioButtonList.SelectedItem.Value)
         {
             case "High":
-                battery = 10;
-                CPU = 90;
-                RAM = 90;
-                Storage = 90;
+                battery = 1;
+                CPU = 100;
+                RAM = 100;
+                Storage = 100;
                 Pictures = 20;
                 break;
 

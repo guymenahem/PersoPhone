@@ -93,14 +93,14 @@ public partial class PhonesTable : System.Web.UI.Page
         string query;
         if (page != null)
         {
-            query = @"SELECT id, name, os, ram, cpu_cores, storage, camera, gps, image_url, 
-                                            battery, screen_resolution, price, screen_size 
+            query = @"SELECT id, name, os, ram, cpu_cores, storage, camera, gps, 
+                                            battery, screen_resolution, price, screen_size ,image_url
                                     FROM phones order by id limit 15 offset " + (page - 1) * 15;
         }
         else
         {
-            query = @"SELECT id, name, os, ram, cpu_cores, storage, camera, gps, image_url, 
-                                            battery, screen_resolution, price, screen_size 
+            query = @"SELECT id, name, os, ram, cpu_cores, storage, camera, gps,  
+                                            battery, screen_resolution, price, screen_size,image_url
                                     FROM phones order by id";
 
         }
@@ -160,11 +160,13 @@ public partial class PhonesTable : System.Web.UI.Page
                 command.Parameters.AddWithValue("@storage", NpgsqlTypes.NpgsqlDbType.Bigint, keyArray[4] ?? DBNull.Value);
                 command.Parameters.AddWithValue("@camera", NpgsqlTypes.NpgsqlDbType.Text, keyArray[5] ?? DBNull.Value);
                 command.Parameters.AddWithValue("@gps", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[6] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@image_url", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[7] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@battery", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[8] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@screen_resolution", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[9] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@price", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[10] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@screen_size", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[11] ?? DBNull.Value);
+
+                command.Parameters.AddWithValue("@battery", NpgsqlTypes.NpgsqlDbType.Text, keyArray[7] ?? DBNull.Value);
+                command.Parameters.AddWithValue("@screen_resolution", NpgsqlTypes.NpgsqlDbType.Text, keyArray[8] ?? DBNull.Value);
+                command.Parameters.AddWithValue("@price", NpgsqlTypes.NpgsqlDbType.Integer, keyArray[9] ?? DBNull.Value);
+                command.Parameters.AddWithValue("@screen_size", NpgsqlTypes.NpgsqlDbType.Double, keyArray[10] ?? DBNull.Value);
+
+                command.Parameters.AddWithValue("@image_url", NpgsqlTypes.NpgsqlDbType.Text, keyArray[11] ?? DBNull.Value);
 
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -203,12 +205,12 @@ public partial class PhonesTable : System.Web.UI.Page
                 command.Parameters.AddWithValue("@storage", NpgsqlTypes.NpgsqlDbType.Bigint, keyArray[4] ?? DBNull.Value);
                 command.Parameters.AddWithValue("@camera", NpgsqlTypes.NpgsqlDbType.Text, keyArray[5] ?? DBNull.Value);
                 command.Parameters.AddWithValue("@gps", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[6] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@image_url", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[7] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@battery", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[8] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@screen_resolution", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[9] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@price", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[10] ?? DBNull.Value);
-                command.Parameters.AddWithValue("@screen_size", NpgsqlTypes.NpgsqlDbType.Boolean, keyArray[11] ?? DBNull.Value);
+                command.Parameters.AddWithValue("@battery", NpgsqlTypes.NpgsqlDbType.Text, keyArray[7] ?? DBNull.Value);
+                command.Parameters.AddWithValue("@screen_resolution", NpgsqlTypes.NpgsqlDbType.Text, keyArray[8] ?? DBNull.Value);
+                command.Parameters.AddWithValue("@price", NpgsqlTypes.NpgsqlDbType.Integer, keyArray[9] ?? DBNull.Value);
+                command.Parameters.AddWithValue("@screen_size", NpgsqlTypes.NpgsqlDbType.Double, keyArray[10] ?? DBNull.Value);
 
+                command.Parameters.AddWithValue("@image_url", NpgsqlTypes.NpgsqlDbType.Text, keyArray[11] ?? DBNull.Value);
                 command.ExecuteNonQuery();
                 connection.Close();
             }

@@ -26,6 +26,9 @@
                  <li>
                      <a href="PhonesApi.aspx">Search Phones in External API</a>
                  </li>
+                 <li>
+                     <a href="SimulateAlgo.aspx">Simulate Algorithem</a>
+                 </li>
              </ul>
 
          </div>

@@ -49,7 +49,7 @@
                 android:id="@+id/battery_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='High battery usage'
+                android:text='Fetching data'
                 android:textSize="@dimen/rec_text_size"
                 android:layout_row="0"
                 android:layout_column="1" />
@@ -61,8 +61,8 @@
                 android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/danger_badge"
-                android:text="High"
+                android:background="@drawable/no_data_badge"
+                android:text="No data"
                 android:textColor="#FFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -82,7 +82,7 @@
                 android:id="@+id/memory_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='never critical'
+                android:text='Fetching data'
                 android:textSize="@dimen/rec_text_size"
                 android:layout_row="1"
                 android:layout_column="1" />
@@ -94,8 +94,8 @@
                 android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ok_badge"
-                android:text="Low"
+                android:background="@drawable/no_data_badge"
+                android:text="No data"
                 android:textColor="#FFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -115,7 +115,7 @@
                 android:id="@+id/storage_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='Average free is 4GB'
+                android:text='Fetching data'
                 android:textSize="@dimen/rec_text_size"
                 android:layout_row="2"
                 android:layout_column="1" />
@@ -127,8 +127,8 @@
                 android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/medium_badge"
-                android:text="Medium"
+                android:background="@drawable/no_data_badge"
+                android:text="No data"
                 android:textColor="#FFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -148,7 +148,7 @@
                 android:id="@+id/cpu_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='Critical cpu'
+                android:text='Fetching data'
                 android:textSize="@dimen/rec_text_size"
                 android:layout_row="3"
                 android:layout_column="1" />
@@ -160,8 +160,8 @@
                 android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/danger_badge"
-                android:text="High"
+                android:background="@drawable/no_data_badge"
+                android:text="No data"
                 android:textColor="#FFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -181,7 +181,7 @@
                 android:id="@+id/camera_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='Average camera usage'
+                android:text='Fetching data'
                 android:textSize="@dimen/rec_text_size"
                 android:layout_row="4"
                 android:layout_column="1" />
@@ -193,8 +193,8 @@
                 android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ok_badge"
-                android:text="Low"
+                android:background="@drawable/no_data_badge"
+                android:text="No data"
                 android:textColor="#FFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -214,7 +214,7 @@
                 android:id="@+id/screen_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='85% from max in market'
+                android:text='Fetching data'
                 android:textSize="@dimen/rec_text_size"
                 android:layout_row="5"
                 android:layout_column="1" />
@@ -226,8 +226,8 @@
                 android:layout_column="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ok_badge"
-                android:text="Low"
+                android:background="@drawable/no_data_badge"
+                android:text="No Data"
                 android:textColor="#FFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />

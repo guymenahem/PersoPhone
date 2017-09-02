@@ -150,7 +150,7 @@ public partial class SimulateAlgo : System.Web.UI.Page
 
                     command.Parameters.AddWithValue("@userid", NpgsqlTypes.NpgsqlDbType.Integer, userId);
                     command.Parameters.AddWithValue("@name", NpgsqlTypes.NpgsqlDbType.Char, phoneName);
-                    command.Parameters.AddWithValue("@free", NpgsqlTypes.NpgsqlDbType.Double, (double)(int)((double)Storage/2));
+                    command.Parameters.AddWithValue("@free", NpgsqlTypes.NpgsqlDbType.Double, 50 -(double)(int)((double)Storage/2));
                     command.Parameters.AddWithValue("@date", NpgsqlTypes.NpgsqlDbType.TimestampTZ, dt);
                     command.ExecuteNonQuery();
 

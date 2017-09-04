@@ -110,12 +110,12 @@ router.get('/recommendedPhones',
             var prefernces = values[2][0] || {};
 
 			var brands = [
-				{ name: 'apple', point: 1.0, factor: 1.07, screenFactor: 1.07, os:'ios' },
-				{ name: 'samsung', point: 0.81, factor: 1.06, screenFactor: 1.07, os: 'android' },
+				{ name: 'apple', point: 1.0, factor: 1.2, screenFactor: 1.07, os:'ios' },
+				{ name: 'samsung', point: 0.81, factor: 1.15, screenFactor: 1.07, os: 'android' },
 				{ name: 'lg', point: 0.66, factor: 1.0, screenFactor: 1.07, os: 'android' },
 				{ name: 'xiaomi', point: 0.5, factor: 0.93, screenFactor: 1.02, os: 'android' },
-				{ name: 'motorola', point: 0.36, factor: 0.76, screenFactor: 0.94, os: 'android' },
-				{ name: 'other', point: 0.18, factor: 0.72, screenFactor: 0.87, os: 'other' }
+				{ name: 'motorola', point: 0.36, factor: 0.86, screenFactor: 0.94, os: 'android' },
+				{ name: 'other', point: 0.18, factor: 0.82, screenFactor: 0.87, os: 'other' }
 			];
 
 			var operating_systems = [
@@ -144,8 +144,9 @@ router.get('/recommendedPhones',
 					// else returns the last one the other
 					return brands[i];
 				}
-				var brand = getBrand(phone.name);
-				phoneVector.push(brand.point);
+                var brand = getBrand(phone.name);
+                if (prefernces['brand'])
+				    phoneVector.push(brand.point);
 
 				// *************** os ******************************
 				   
@@ -171,8 +172,8 @@ router.get('/recommendedPhones',
 				function getBattery(batteryValue) {
 					var mAhValue = parseFloat(batteryValue);
 
-					// calculates the mAh on scale between min 1000 mAh to 4500 mAh
-					return BetweenOneAndZero(((mAhValue - 1000) / (4500 - 1000)) * brand.factor);
+					// calculates the mAh on scale between min 1000 mAh to 4200 mAh
+					return BetweenOneAndZero(((mAhValue - 1000) / (4200 - 1000)) * brand.factor);
 				}
 				var battery = getBattery(phone.battery);
 				phoneVector.push(battery);
@@ -275,11 +276,13 @@ router.get('/recommendedPhones',
 
 				// *************** price ***************************
 				function getPrice(priceValue) {
-					return BetweenOneAndZero((1 - ((priceValue - 500) / 3700)));
+					return BetweenOneAndZero((priceValue - 500) / 3700);
 				}
 
 				var price = getPrice(phone.price);
-				phoneVector.push(price);
+                phoneVector.push(price);
+                phoneVector.push(price);
+                phoneVector.push(price);
 
 				return phoneVector;
 			}
@@ -301,7 +304,7 @@ router.get('/recommendedPhones',
 					userVector.push(brand);
 				}
 				else {
-					userVector.push(0.5);
+					//userVector.push(0.5);
 				}
 
 				// *************** os *********************************
@@ -371,11 +374,16 @@ router.get('/recommendedPhones',
 					'Cheap': 0.15,
 				}
 
+                var avg = (grades['batteryGrade'] + grades['cameraGrade'] + grades['cpuGrade'] + grades['storageGrade'] + grades['ramGrade']) / 5;
 				if (prefernces['price']) {
                     userVector.push(prices[prefernces['price']]);
+                    userVector.push(avg);
+                    userVector.push(avg);                                        
 				}
-				else {
-					userVector.push(0.5);
+                else {
+                    userVector.push(avg);
+                    userVector.push(avg);
+                    userVector.push(avg);
 				}
 
 				return userVector;
@@ -397,18 +405,64 @@ router.get('/recommendedPhones',
 					}
 
 					return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-				}
+                }
+
+                function euclidean(x, y) {
+                    var len,
+                        val,
+                        abs,
+                        t,
+                        s,
+                        r,
+                        i;
+                    if (!Array.isArray(x)) {
+                        throw new TypeError('euclidean()::invalid input argument. First argument must be an array. Value: `' + x + '`.');
+                    }
+                    if (!Array.isArray(y)) {
+                        throw new TypeError('euclidean()::invalid input argument. Second argument must be an array. Value: `' + y + '`.');
+                    }
+                    
+                    len = x.length;
+                    if (len !== y.length) {
+                        throw new Error('euclidean()::invalid input arguments. Input arrays must have the same length.');
+                    }
+                    if (!len) {
+                        return null;
+                    }
+                    t = 0;
+                    s = 1;
+
+                    for (i = 0; i < len; i++) {
+                        val = x[i] - y[i];
+                        abs = (val < 0) ? -val : val;
+                        if (abs > 0) {
+                            if (abs > t) {
+                                r = t / val;
+                                s = 1 + s * r * r;
+                                t = abs;
+                            } else {
+                                r = val / t;
+                                s += r * r;
+                            }
+                        }
+                    }
+                    
+                    return t * Math.sqrt(s);
+                }
 
 				for (var i = 0; i < phonesVectors.length; i++) {
                     phones[i].cosineSimilarity = cosineSimilarity(userVector, phonesVectors[i]);
                     if (phones[i].cosineSimilarity == null || phones[i].cosineSimilarity == undefined) throw "cosineSimilarity is null";
-				}
+                    phones[i].euclideanDistance = -euclidean(userVector, phonesVectors[i]);
+                    if (phones[i].euclideanDistance == null || phones[i].euclideanDistance == undefined) throw "euclideanDistance is null";
+                }
 			}
 
 			runAlgorithem(userDesiredPhoneVector, phonesVectors, 3);
 
 			// K nearest neighbors
-			phones.sort(function (a, b) { return b.cosineSimilarity - a.cosineSimilarity });
+            phones.sort(function (a, b) { return b.cosineSimilarity - a.cosineSimilarity });
+            phones.sort(function (a, b) { return b.euclideanDistance - a.euclideanDistance });
 
 			res.send(phones.slice(0, 3));
 		},function(err){

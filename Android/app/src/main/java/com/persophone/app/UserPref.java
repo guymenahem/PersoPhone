@@ -60,7 +60,7 @@ public class UserPref {
         });
 
         try {
-            Thread.sleep(1300);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

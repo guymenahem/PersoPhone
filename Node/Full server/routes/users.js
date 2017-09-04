@@ -320,7 +320,7 @@ router.getBatteryGrade = function (user_id, phone_name) {
                         var grade = 0;
 						
                         if (rows.length > 0) {
-                            grade = result.rows[0].avg_value / 100;
+                            grade = 1 - (result.rows[0].avg_value / 100);
                         }
 
                         console.log("GET battery grade succeed");

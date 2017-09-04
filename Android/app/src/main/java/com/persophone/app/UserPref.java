@@ -58,6 +58,12 @@ public class UserPref {
 
             }
         });
+
+        try {
+            Thread.sleep(1300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getUserID(){
